@@ -145,20 +145,6 @@ class AiModelSeeder extends Seeder
             ]);
         }
 
-        $aiSearch = AIModel::where('slug', AiTextModelEnum::aiSearch())->first();
-        if (!$aiSearch) {
-            DB::table($table)->insert([
-                'provider_id' => AIProvider::where('slug', AiProviderEnum::ingestai()->value)->pluck('id')->first(),
-                'slug' => AiTextModelEnum::aiSearch(),
-                'name' => 'Vector / AI Search',
-                'active' => true,
-                'input_format' => 'text',
-                'output_format' => 'text',
-                'created_at' => $date,
-                'updated_at' => $date,
-            ]);
-        }
-
         $claude1 = AIModel::where('slug', AiTextModelEnum::claude1())->first();
         if (!$claude1) {
             DB::table($table)->insert([

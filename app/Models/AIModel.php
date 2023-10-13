@@ -26,11 +26,6 @@ class AIModel extends Model
         $query->where('input_format', 'text')->where('output_format', 'text');
     }
 
-    public function scopeTranscribe(Builder $query)
-    {
-        $query->where('input_format', 'audio')->where('output_format', 'text');
-    }
-
     public function fullname(): Attribute
     {
         return Attribute::make(

@@ -50,33 +50,11 @@ class AiProviderSeeder extends Seeder
             ]);
         }
 
-        $amazon = AIProvider::where('slug', AiProviderEnum::amazon()->value)->first();
-        if (!$amazon) {
-            DB::table($table)->insert([
-                'slug' => AiProviderEnum::amazon()->value,
-                'name' => 'Amazon',
-                'active' => true,
-                'created_at' => $date,
-                'updated_at' => $date,
-            ]);
-        }
-
         $cohere = AIProvider::where('slug', AiProviderEnum::cohere()->value)->first();
         if (!$cohere) {
             DB::table($table)->insert([
                 'slug' => AiProviderEnum::cohere()->value,
                 'name' => 'Co:here',
-                'active' => true,
-                'created_at' => $date,
-                'updated_at' => $date,
-            ]);
-        }
-
-        $ingestai = AIProvider::where('slug', AiProviderEnum::ingestai()->value)->first();
-        if (!$ingestai) {
-            DB::table($table)->insert([
-                'slug' => AiProviderEnum::ingestai()->value,
-                'name' => 'IngestAI',
                 'active' => true,
                 'created_at' => $date,
                 'updated_at' => $date,
