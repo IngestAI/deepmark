@@ -1,0 +1,72 @@
+version: '3.4'
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: PHP_DEV
+    image: php-fpm-dev
+    environment:
+      APP_KEY: ${APP_KEY}
+      APP_ENV: ${APP_ENV}
+      APP_DEBUG: ${APP_DEBUG}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+    working_dir: /var/www
+    depends_on:
+      - db-testingmachine
+    volumes:
+      - ./docker/php.d/php.dev.ini:/usr/local/etc/php/php.ini
+      - .:/var/www
+    networks:
+      - app-network
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./public:/var/www/public
+      - ./docker/conf.d:/etc/nginx/conf.d
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - php
+    networks:
+      - app-network
+
+  db-testingmachine:
+    image: mysql:8.0
+    ports:
+      - "127.0.0.1:3309:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=pass
+      - MYSQL_DATABASE=db-testingmachine
+      - MYSQL_USER=db-testingmachine
+      - MYSQL_PASSWORD=pass
+      - TZ='America/New_York'
+    volumes:
+      - dbdata:/varl/lib/mysql
+    networks:
+      - app-network
+
+  adminer:
+    image: adminer
+    depends_on:
+      - db-testingmachine
+    ports:
+      - "8089:8080"
+    networks:
+      - app-network
+
+#Volumes
+volumes:
+  dbdata:
+    driver: local
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
