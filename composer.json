@@ -10,7 +10,9 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
-        "spatie/laravel-enum": "^3.0"
+        "spatie/laravel-enum": "^3.0",
+        "spatie/laravel-data": "^3.9",
+        "openai-php/client": "^0.7.3"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
