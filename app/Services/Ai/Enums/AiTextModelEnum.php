@@ -24,7 +24,6 @@ use Spatie\Enum\Laravel\Enum;
  * @method static self jurassic2Light()
  * @method static self jurassic2Mid()
  * @method static self ai21Summarize()
- * @method static self aiSearch()
  **/
 final class AiTextModelEnum extends Enum
 {
