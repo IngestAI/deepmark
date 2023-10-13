@@ -12,6 +12,17 @@ class Task extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $casts = [
+        'data' => 'json'
+    ];
+
+    protected $fillable = [
+        'uuid',
+        'status',
+        'data',
+        'progress'
+    ];
+
     public static function boot()
     {
         parent::boot();
