@@ -23,4 +23,15 @@ final class PromptRequestStatusEnum extends Enum
             'failed' => 5
         ];
     }
+
+    protected static function labels()
+    {
+        return [
+            'waiting' => 'Waiting',
+            'running' => 'Running',
+            'suspended' => 'Suspended',
+            'success' => 'Success',
+            'failed' => 'Failed',
+        ];
+    }
 }

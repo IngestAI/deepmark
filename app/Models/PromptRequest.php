@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PromptRequest extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 }
