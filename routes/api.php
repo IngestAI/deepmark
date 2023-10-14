@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\DictionaryController;
 use App\Http\Controllers\Api\PromptRequestController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('api.bearerToken')
-    ->apiResource('/prompts', PromptRequestController::class);
+Route::group(['middleware' => 'api.bearerToken'], function () {
+    Route::apiResource('/prompts', PromptRequestController::class);
+    Route::get('/models', [DictionaryController::class, 'models']);
+});
+
+
+
+
 
