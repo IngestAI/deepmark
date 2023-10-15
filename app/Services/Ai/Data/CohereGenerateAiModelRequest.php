@@ -12,9 +12,9 @@ class CohereGenerateAiModelRequest extends Data
 
     public function __construct(
         public string $prompt,
-        public int $maxTokens,
-        public string $likelihoods,
-        public string $truncate,
+        public int $maxTokens = 300,
+        public string $likelihoods = 'NONE',
+        public string $truncate = '',
     ){}
 
     public function toArray(): array

@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Data\PromptRequestJobData;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PromptStoreRequest;
 use App\Http\Resources\Api\PromptsResource;
+use App\Jobs\PromptRequestJob;
 use App\Models\PromptRequest;
+use App\Models\Task;
 use Illuminate\Http\Request;
 
 class PromptRequestController extends Controller
@@ -22,9 +26,41 @@ class PromptRequestController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PromptStoreRequest $request)
     {
-        //
+
+        $task = Task::create([
+            'uuid' => $request->uuid,
+            'data' => [
+                'prompt' => $request->prompt,
+                'models' => $request->models
+            ],
+            'progress' => 0
+        ]);
+
+        $progress = 0;
+
+        $requestTotalIterations = 2;
+        $position = 1;
+        // todo take iteration count from the request
+        for ($i = 1; $i <= $requestTotalIterations; $i++) {
+            foreach ($request->models as $model) {
+                PromptRequestJob::dispatch(
+                    new PromptRequestJobData(
+                        $task,
+                        $model,
+                        $position,
+                        $progress += 100 / (count($request->models) * $requestTotalIterations)
+                    )
+                );
+                $position++;
+                sleep(7);
+            }
+        }
+
+        return response()->json([
+            'uuid' => $task->uuid,
+        ]);
     }
 
     /**

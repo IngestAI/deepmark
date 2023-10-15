@@ -6,17 +6,18 @@ use Spatie\LaravelData\Data;
 
 class Ai21SummarizeAiModelRequest extends Data
 {
+    public string $url = 'summarize';
+
     public function __construct(
-        public string $source,
-        public string $url,
-        public string $sourceType,
-        public string $focus,
+        public string $prompt,
+        public string $sourceType = 'TEXT',
+        public string $focus = '',
     ){}
 
     public function toArray(): array
     {
         $data = [
-            'source' => $this->source,
+            'source' => $this->prompt,
         ];
 
         if (!empty($this->sourceType)) {

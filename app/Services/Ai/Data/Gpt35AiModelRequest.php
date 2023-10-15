@@ -7,7 +7,7 @@ class Gpt35AiModelRequest extends GptAiModelRequest
     private const MODEL = 'gpt-3.5-turbo';
 
     public function __construct(
-        string $request,
+        public string $request,
     )
     {
         parent::__construct(self::MODEL, $request);
