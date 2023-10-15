@@ -4,11 +4,11 @@ namespace App\Services\Ai\Data;
 
 use Spatie\LaravelData\Data;
 
-class Jurassic2UltraAiModelResponse extends Data implements AiModelResponse
+class CohereSummarizeAiModelResponse extends Data implements AiModelResponse
 {
     public function __construct(
         public array $response
-    ) {}
+    ){}
 
     public function isSuccessful(): bool
     {
@@ -17,6 +17,6 @@ class Jurassic2UltraAiModelResponse extends Data implements AiModelResponse
 
     public function getAnswer(): string
     {
-        return trim($this->response['prompt']['text'] ?? '');
+        return trim($this->response['summary'] ?? '');
     }
 }
