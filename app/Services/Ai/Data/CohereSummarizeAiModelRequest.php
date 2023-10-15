@@ -6,16 +6,16 @@ use Spatie\LaravelData\Data;
 
 class CohereSummarizeAiModelRequest extends Data
 {
-    private const MODEL = 'summarize';
+    private const MODEL = 'summarize-xlarge';
 
     public string $url = 'summarize';
 
     public function __construct(
         public string $prompt,
-        public string $length,
-        public string $format,
-        public string $extractiveness,
-        public float $temperature,
+        public string $length = 'auto',
+        public string $format = 'paragraph',
+        public string $extractiveness = 'low',
+        public float $temperature = 0.3,
     ){}
 
     public function toArray(): array

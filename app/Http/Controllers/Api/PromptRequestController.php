@@ -39,17 +39,18 @@ class PromptRequestController extends Controller
         ]);
 
         $progress = 0;
-        $resquestTotalIterations = 5;
+
+        $requestTotalIterations = 2;
         $position = 1;
         // todo take iteration count from the request
-        for ($i = 1; $i <= $resquestTotalIterations; $i++) {
+        for ($i = 1; $i <= $requestTotalIterations; $i++) {
             foreach ($request->models as $model) {
                 PromptRequestJob::dispatch(
                     new PromptRequestJobData(
                         $task,
                         $model,
                         $position,
-                        $progress += 100 / (count($request->models) * $resquestTotalIterations)
+                        $progress += 100 / (count($request->models) * $requestTotalIterations)
                     )
                 );
                 $position++;
