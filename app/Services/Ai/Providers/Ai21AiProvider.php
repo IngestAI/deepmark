@@ -3,8 +3,9 @@
 namespace App\Services\Ai\Providers;
 
 use App\Services\Ai\Enums\AiTextModelEnum;
+use App\Services\Ai\Models\Ai21SummarizeAiModel;
 use App\Services\Ai\Models\AiModel;
-use App\Services\Ai\Models\Jurassic2UltraAiModel;
+use App\Services\Ai\Models\Jurassic2AiModel;
 use App\Services\Ai\Models\NullAiModel;
 
 class Ai21AiProvider implements AiProvider
@@ -13,7 +14,11 @@ class Ai21AiProvider implements AiProvider
     {
         switch ($type) {
             case (string) AiTextModelEnum::jurassic2Ultra():
-                return new Jurassic2UltraAiModel();
+            case (string) AiTextModelEnum::jurassic2Mid():
+            case (string) AiTextModelEnum::jurassic2Light():
+                return new Jurassic2AiModel();
+            case (string) AiTextModelEnum::ai21Summarize():
+                return new Ai21SummarizeAiModel();
         }
 
         return new NullAiModel();

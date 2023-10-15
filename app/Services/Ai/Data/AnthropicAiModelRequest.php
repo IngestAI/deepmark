@@ -27,9 +27,4 @@ class AnthropicAiModelRequest extends Data
             'max_tokens_to_sample' => self::MAX_TOKENS,
         ];
     }
-
-    public function toJson($options = 0): string
-    {
-        return json_encode($this->toArray());
-    }
 }
