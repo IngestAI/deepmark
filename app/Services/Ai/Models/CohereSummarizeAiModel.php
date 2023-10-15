@@ -2,23 +2,22 @@
 
 namespace App\Services\Ai\Models;
 
-use App\Services\Ai\Data\Jurassic2UltraAiModelResponse;
+use App\Services\Ai\Data\CohereSummarizeAiModelResponse;
 use Spatie\LaravelData\Data;
 
-class Jurassic2UltraAiModel implements AiModel
+class CohereSummarizeAiModel implements AiModel
 {
-    private string $apiKey;
+    protected string $apiKey;
 
     public function __construct()
     {
-        $this->apiKey = config('services.ai21.api_key');
+        $this->apiKey = config('services.cohere.api_key');
     }
-
     public function send(Data $request): Data
     {
         $curl = curl_init();
         curl_setopt_array($curl, [
-            CURLOPT_URL => 'https://api.ai21.com/studio/v1/' . $request->url,
+            CURLOPT_URL => 'https://api.cohere.ai/v1/' . $request->url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -46,6 +45,6 @@ class Jurassic2UltraAiModel implements AiModel
             throw new \Exception('Wrong JSON:' . $response);
         }
 
-        return new Jurassic2UltraAiModelResponse($data);
+        return new CohereSummarizeAiModelResponse($data);
     }
 }

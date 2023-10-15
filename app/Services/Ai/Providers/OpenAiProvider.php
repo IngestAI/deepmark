@@ -4,10 +4,9 @@ namespace App\Services\Ai\Providers;
 
 use App\Services\Ai\Enums\AiTextModelEnum;
 use App\Services\Ai\Models\AiModel;
-use App\Services\Ai\Models\Gpt35AiModel;
-use App\Services\Ai\Models\Gpt35Turbo16kAiModel;
-use App\Services\Ai\Models\Gpt4AiModel;
+use App\Services\Ai\Models\GptAiModel;
 use App\Services\Ai\Models\NullAiModel;
+use App\Services\Ai\Models\OpenAiCompletionAiModel;
 
 class OpenAiProvider implements AiProvider
 {
@@ -15,11 +14,15 @@ class OpenAiProvider implements AiProvider
     {
         switch ($type) {
             case (string) AiTextModelEnum::gpt3_5():
-                return new Gpt35AiModel();
             case (string) AiTextModelEnum::gpt4():
-                return new Gpt4AiModel();
             case (string) AiTextModelEnum::gpt3_5Turbo16k():
-                return new Gpt35Turbo16kAiModel();
+                return new GptAiModel();
+            case (string) AiTextModelEnum::textAda001():
+            case (string) AiTextModelEnum::textBabbage001():
+            case (string) AiTextModelEnum::textCurie001():
+            case (string) AiTextModelEnum::textDavinci002():
+            case (string) AiTextModelEnum::textDavinci003():
+                return new OpenAiCompletionAiModel();
         }
 
         return new NullAiModel();

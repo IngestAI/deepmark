@@ -4,7 +4,7 @@ namespace App\Services\Ai\Data;
 
 use Spatie\LaravelData\Data;
 
-class Jurassic2UltraAiModelResponse extends Data implements AiModelResponse
+class Jurassic2AiModelResponse extends Data implements AiModelResponse
 {
     public function __construct(
         public array $response
