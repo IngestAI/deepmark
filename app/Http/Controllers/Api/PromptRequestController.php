@@ -54,7 +54,6 @@ class PromptRequestController extends Controller
                     )
                 );
                 $position++;
-                sleep(7);
             }
         }
 
