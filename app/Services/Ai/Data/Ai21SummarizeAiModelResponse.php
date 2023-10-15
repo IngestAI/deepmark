@@ -19,14 +19,4 @@ class Ai21SummarizeAiModelResponse extends Data implements AiModelResponse
     {
         return trim($this->response['summary'] ?? '');
     }
-
-    public function getTotalTokens(): int
-    {
-        return 0;
-    }
-
-    public function toJson($options = 0): string
-    {
-        return json_encode($this->response);
-    }
 }

@@ -29,9 +29,4 @@ class CohereSummarizeAiModelRequest extends Data
             'temperarure' => $this->temperature,
         ];
     }
-
-    public function toJson($options = 0): string
-    {
-        return json_encode($this->toArray());
-    }
 }

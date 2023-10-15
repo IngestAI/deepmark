@@ -21,9 +21,4 @@ class OpenAiCompletionAiModelResponse extends Data implements AiModelResponse
     {
         return trim($this->response->choices[0]->text ?? '');
     }
-
-    public function toJson($options = 0): string
-    {
-        return json_encode($this->response);
-    }
 }

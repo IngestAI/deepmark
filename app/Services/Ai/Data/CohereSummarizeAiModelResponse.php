@@ -19,9 +19,4 @@ class CohereSummarizeAiModelResponse extends Data implements AiModelResponse
     {
         return trim($this->response['summary'] ?? '');
     }
-
-    public function toJson($options = 0): string
-    {
-        return json_encode($this->response);
-    }
 }

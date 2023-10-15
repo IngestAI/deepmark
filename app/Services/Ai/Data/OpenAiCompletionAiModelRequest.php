@@ -30,9 +30,4 @@ class OpenAiCompletionAiModelRequest extends Data
             'temperature' => $this->temperature,
         ];
     }
-
-    public function toJson($options = 0): string
-    {
-        return json_encode($this->toArray());
-    }
 }
