@@ -23,7 +23,7 @@ class TasksResource extends JsonResource
             'uuid' => $this->uuid ?? '',
             'prompt' => $this->data['prompt'] ?? '',
             'iterations' => $this->data['iterations'] ?? 1,
-            'term' => $this->data['term'] ?? 'Pattern phrase',
+            'term' => $this->data['term'] ?? '',
             'condition' => PromptRequestCondition::from($this->data['condition'] ?? PromptRequestCondition::equal())->label,
             'status' => TaskStatusEnum::from($this->status)->label,
             'progress' => (int) $this->progress,
