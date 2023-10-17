@@ -28,29 +28,28 @@ class PromptRequestController extends Controller
      */
     public function store(PromptStoreRequest $request)
     {
-
         $task = Task::create([
             'uuid' => $request->uuid,
             'data' => [
                 'prompt' => $request->prompt,
-                'models' => $request->models
+                'models' => $request->models,
+                'iterations' => $request->iterations,
+                'condition' => $request->condition,
+                'term' => $request->term,
             ],
             'progress' => 0
         ]);
 
-        $progress = 0;
-
-        $requestTotalIterations = 2;
+        $progress = 0;;
         $position = 1;
-        // todo take iteration count from the request
-        for ($i = 1; $i <= $requestTotalIterations; $i++) {
+        for ($i = 1; $i <= $request->iterations; $i++) {
             foreach ($request->models as $model) {
                 PromptRequestJob::dispatch(
                     new PromptRequestJobData(
                         $task,
                         $model,
                         $position,
-                        $progress += 100 / (count($request->models) * $requestTotalIterations)
+                        $progress += 100 / (count($request->models) * $request->iterations)
                     )
                 );
                 $position++;

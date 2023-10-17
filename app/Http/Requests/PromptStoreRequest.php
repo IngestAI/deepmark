@@ -30,7 +30,11 @@ class PromptStoreRequest extends FormRequest
     {
         return [
             'models' => ['required'],
-            'prompt' => ['required']
+            'prompt' => ['required'],
+            'iterations' => ['required'],
+            'condition' => ['required'],
+            'term' => ['required'],
+
         ];
     }
 
