@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Data\PromptRequestJobData;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\TaskShowRequest;
 use App\Http\Requests\Api\TaskStoreRequest;
 use App\Http\Resources\Api\TasksResource;
 use App\Jobs\PromptRequestJob;

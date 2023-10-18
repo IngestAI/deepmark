@@ -16,6 +16,7 @@ class PromptRequestResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'query' =>  $this->prompt,
             'answer' =>  $this->data['answers'] ?? '',
             'status' => PromptRequestStatusEnum::from($this->status)->label,
             'model' => ModelResource::make($this->model),
