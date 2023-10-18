@@ -5,7 +5,7 @@ namespace App\Http\Resources\Api;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class AiModelResource extends JsonResource
+class ModelResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

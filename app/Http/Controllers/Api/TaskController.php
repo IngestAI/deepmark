@@ -3,16 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Data\PromptRequestJobData;
-use App\Enums\TaskStatusEnum;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PromptStoreRequest;
+use App\Http\Requests\Api\TaskStoreRequest;
 use App\Http\Resources\Api\TasksResource;
 use App\Jobs\PromptRequestJob;
-use App\Models\PromptRequest;
 use App\Models\Task;
 use Illuminate\Http\Request;
 
-class PromptRequestController extends Controller
+class TaskController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -31,7 +29,7 @@ class PromptRequestController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PromptStoreRequest $request)
+    public function store(TaskStoreRequest $request)
     {
         $task = Task::create([
             'uuid' => $request->uuid,
@@ -45,7 +43,7 @@ class PromptRequestController extends Controller
             'progress' => 0
         ]);
 
-        $progress = 0;;
+        $progress = 0;
         $position = 1;
         for ($i = 1; $i <= $request->iterations; $i++) {
             foreach ($request->models as $model) {
@@ -53,11 +51,10 @@ class PromptRequestController extends Controller
                     new PromptRequestJobData(
                         $task,
                         $model,
-                        $position,
+                        $position++,
                         $progress += 100 / (count($request->models) * $request->iterations)
                     )
                 );
-                $position++;
             }
         }
 
