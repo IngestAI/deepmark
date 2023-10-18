@@ -9,6 +9,7 @@ use App\Models\AIModel;
 use App\Models\AIProvider;
 use App\Models\PromptRequest;
 use App\Services\Ai\AiFactory;
+use App\Services\ConditionStrategy\ConditionStrategyContext;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -59,7 +60,11 @@ class PromptRequestJob implements ShouldQueue
             ->send($request->model);
 
         if ($response->isSuccessful()) {
-            $promptRequest->data = json_encode(['answers' => $response->getAnswer()]);
+            $answer = $response->getAnswer();
+            $promptRequest->data = json_encode([
+                'answers' => $answer,
+                'match' => (new ConditionStrategyContext($task->data['condition']))->checkCondition($answer, $task->data['term'])
+            ]);
             $promptRequest->status = (string) PromptRequestStatusEnum::success();
         } else {
             $promptRequest->status = (string) PromptRequestStatusEnum::failed();
