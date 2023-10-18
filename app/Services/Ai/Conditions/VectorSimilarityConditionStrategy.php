@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\ConditionStrategy;
+namespace App\Services\Ai\Conditions;
 
 class VectorSimilarityConditionStrategy implements ConditionStrategyInterface
 {

@@ -1,16 +1,14 @@
 <?php
 
-namespace App\Services\ConditionStrategy;
+namespace App\Services\Ai\Conditions;
 
 use App\Enums\PromptRequestConditionEnum;
 
 class ConditionStrategyContext
 {
-    private ConditionStrategyInterface $conditionStrategy;
-
-    public function __construct(string $condition)
+    public static function make(string $condition): ConditionStrategyInterface
     {
-        $this->conditionStrategy = match ($condition) {
+        return match ($condition) {
             (string) PromptRequestConditionEnum::equal() => new EqualConditionStrategy(),
             (string) PromptRequestConditionEnum::notEqual() => new NotEqualConditionStrategy(),
             (string) PromptRequestConditionEnum::notContains() => new NotContainsConditionStrategy(),
@@ -18,12 +16,7 @@ class ConditionStrategyContext
             (string) PromptRequestConditionEnum::smallerThan() => new SmallerThenConditionStrategy(),
             (string) PromptRequestConditionEnum::biggerThan() => new BiggerThenConditionStrategy(),
             (string) PromptRequestConditionEnum::vectorSimilarity() => new VectorSimilarityConditionStrategy(),
-            default => throw new \RuntimeException('Undefined Strategy'),
+            default => new NullConditionStrategy(),
         };
-    }
-
-    public function checkCondition(string $modelAnswer, string $term): bool
-    {
-        return $this->conditionStrategy->apply($modelAnswer, $term);
     }
 }
