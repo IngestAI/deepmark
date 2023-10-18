@@ -17,7 +17,8 @@ class PromptRequestResource extends JsonResource
     {
         return [
             'query' =>  $this->prompt,
-            'answer' =>  $this->data['answers'] ?? '',
+            'answer' => $this->data['answer'] ?? '',
+            'match' => $this->data['match'] ?? false,
             'status' => PromptRequestStatusEnum::from($this->status)->label,
             'model' => ModelResource::make($this->model),
         ];

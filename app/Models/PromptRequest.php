@@ -15,6 +15,14 @@ class PromptRequest extends Model
         'data' => 'json'
     ];
 
+    protected $fillable = [
+        'prompt',
+        'task_id',
+        'model_id',
+        'position',
+        'status',
+    ];
+
     public function model(): BelongsTo
     {
         return $this->belongsTo(AIModel::class);
