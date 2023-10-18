@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\TaskStatusEnum;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -32,5 +33,15 @@ class Task extends Model
             $task->progress = 0;
             $task->status = TaskStatusEnum::waiting()->value;
         });
+    }
+
+    public function scopeFinished(Builder $query)
+    {
+        $query->whereIn('status', [
+                TaskStatusEnum::suspended(),
+                TaskStatusEnum::success(),
+                TaskStatusEnum::failed(),
+            ]
+        );
     }
 }

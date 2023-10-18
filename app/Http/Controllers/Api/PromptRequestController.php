@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Data\PromptRequestJobData;
+use App\Enums\TaskStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PromptStoreRequest;
-use App\Http\Resources\Api\PromptsResource;
+use App\Http\Resources\Api\TasksResource;
 use App\Jobs\PromptRequestJob;
 use App\Models\PromptRequest;
 use App\Models\Task;
@@ -19,7 +20,11 @@ class PromptRequestController extends Controller
     public function index()
     {
         return response()->json([
-            'data' => PromptsResource::collection(PromptRequest::get())
+            'data' => TasksResource::collection(
+                Task::finished()
+                    ->orderBy('id', 'desc')
+                    ->get()
+            )
         ]);
     }
 

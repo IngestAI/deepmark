@@ -23,4 +23,15 @@ final class TaskStatusEnum extends Enum
             'failed' => 5
         ];
     }
+
+    protected static function labels(): array
+    {
+        return [
+            'waiting' => 'Waiting',
+            'running' => 'Running',
+            'suspended' => 'Suspended',
+            'success' => 'Success',
+            'failed' => 'Failed',
+        ];
+    }
 }
