@@ -9,6 +9,7 @@ use App\Models\AIModel;
 use App\Models\AIProvider;
 use App\Models\PromptRequest;
 use App\Services\Ai\AiFactory;
+use App\Services\Ai\Conditions\ConditionStrategyContext;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -47,26 +48,31 @@ class PromptRequestJob implements ShouldQueue
             'status' => (string) TaskStatusEnum::running()
         ])->save();
 
-        $promptRequest = new PromptRequest();
-        $promptRequest->prompt = $task->data['prompt'];
-        $promptRequest->task_id = $task->id;
-        $promptRequest->model_id = $modelEntity->id;
-        $promptRequest->position = $position;
-        $promptRequest->status = (string) PromptRequestStatusEnum::waiting();
-        $promptRequest->save();
+        $promptRequest = PromptRequest::create([
+            'prompt' => $task->data['prompt'],
+            'task_id' => $task->id,
+            'model_id' => $modelEntity->id,
+            'position' => $position,
+            'status' => (string) PromptRequestStatusEnum::waiting(),
+        ]);
 
         $response = AiFactory::provider($provider['slug'])
             ->model($model)
             ->send($request->model);
 
         if ($response->isSuccessful()) {
-            $promptRequest->data = json_encode(['answer' => $response->getAnswer()]);
+            $answer = $response->getAnswer();
+            $promptRequest->data = [
+                'answer' => $answer,
+                'match' => ConditionStrategyContext::make($task->data['condition'])->apply($answer, $task->data['term'])
+            ];
             $promptRequest->status = (string) PromptRequestStatusEnum::success();
         } else {
             $promptRequest->status = (string) PromptRequestStatusEnum::failed();
             Log::channel('tasks')->debug('Wrong response: ' . json_encode($response->response));
         }
         $promptRequest->save();
+
         $task->fill([
             'progress' => $progress
         ])->save();
