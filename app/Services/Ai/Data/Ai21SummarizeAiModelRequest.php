@@ -30,4 +30,9 @@ class Ai21SummarizeAiModelRequest extends Data
 
         return $data;
     }
+
+    public function toJson($options = 0): string
+    {
+        return json_encode($this->toArray());
+    }
 }

@@ -19,4 +19,9 @@ class Jurassic2AiModelRequest extends Data
             'prompt' => $this->prompt
         ];
     }
+
+    public function toJson($options = 0): string
+    {
+        return json_encode($this->toArray());
+    }
 }

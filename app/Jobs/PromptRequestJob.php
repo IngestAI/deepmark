@@ -15,6 +15,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Spatie\LaravelData\Data;
 
 class PromptRequestJob implements ShouldQueue
@@ -59,7 +60,6 @@ class PromptRequestJob implements ShouldQueue
             ->model($model)
             ->send($request->model);
 
-        $promptRequest->status = (string) PromptRequestStatusEnum::failed();
         if ($response->isSuccessful()) {
             $answer = $response->getAnswer();
             $promptRequest->data = [
@@ -67,6 +67,9 @@ class PromptRequestJob implements ShouldQueue
                 'match' => ConditionStrategyContext::make($task->data['condition'])->apply($answer, $task->data['term'])
             ];
             $promptRequest->status = (string) PromptRequestStatusEnum::success();
+        } else {
+            $promptRequest->status = (string) PromptRequestStatusEnum::failed();
+            Log::channel('tasks')->debug('Wrong response: ' . json_encode($response->response));
         }
         $promptRequest->save();
 

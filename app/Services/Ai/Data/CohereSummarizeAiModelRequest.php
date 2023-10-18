@@ -21,12 +21,17 @@ class CohereSummarizeAiModelRequest extends Data
     public function toArray(): array
     {
         return [
-            'prompt' => $this->prompt,
+            'text' => $this->prompt,
             'model' => self::MODEL,
             'length' => $this->length,
             'format' => $this->format,
             'extractiveness' => $this->extractiveness,
             'temperarure' => $this->temperature,
         ];
+    }
+
+    public function toJson($options = 0): string
+    {
+        return json_encode($this->toArray());
     }
 }
