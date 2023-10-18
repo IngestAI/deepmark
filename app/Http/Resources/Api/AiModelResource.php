@@ -4,8 +4,9 @@ namespace App\Http\Resources\Api;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class AiModelResource extends JsonResource
+class AiModelResource extends ResourceCollection
 {
     /**
      * Transform the resource into an array.
@@ -14,6 +15,6 @@ class AiModelResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [$this->slug => $this->fullname];
+        return $this->collection->mapWithKeys(fn($model) => [$model->slug => $model->fullname])->all();
     }
 }

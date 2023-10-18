@@ -3,7 +3,7 @@
 namespace App\Http\Resources\Api;
 
 use App\Enums\PromptRequestStatusEnum;
-use App\Enums\PromptRequestCondition;
+use App\Enums\PromptRequestConditionEnum;
 use App\Enums\TaskStatusEnum;
 use App\Models\AIModel;
 use Illuminate\Http\Request;
@@ -24,7 +24,7 @@ class TasksResource extends JsonResource
             'prompt' => $this->data['prompt'] ?? '',
             'iterations' => $this->data['iterations'] ?? 1,
             'term' => $this->data['term'] ?? '',
-            'condition' => PromptRequestCondition::from($this->data['condition'] ?? PromptRequestCondition::equal())->label,
+            'condition' => PromptRequestConditionEnum::from($this->data['condition'] ?? PromptRequestConditionEnum::equal())->label,
             'status' => TaskStatusEnum::from($this->status)->label,
             'progress' => (int) $this->progress,
             'models' => AiModelResource::collection(AIModel::whereIn('slug', $modelSlugs)->get()),

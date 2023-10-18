@@ -18,6 +18,13 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => 'api.bearerToken'], function () {
     Route::apiResource('/prompts', PromptRequestController::class);
     Route::get('/models', [DictionaryController::class, 'models']);
+    Route::get('/conditions', [DictionaryController::class, 'conditions']);
+});
+
+Route::fallback(function(){
+    return response()->json([
+        'message' => 'Page Not Found.'
+    ], 404);
 });
 
 

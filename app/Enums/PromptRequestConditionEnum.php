@@ -13,7 +13,7 @@ use Spatie\Enum\Laravel\Enum;
  * @method static self biggerThan()
  * @method static self vectorSimilarity()
  */
-final class PromptRequestCondition extends Enum
+final class PromptRequestConditionEnum extends Enum
 {
     protected static function labels()
     {

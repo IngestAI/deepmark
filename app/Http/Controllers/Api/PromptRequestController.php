@@ -45,7 +45,7 @@ class PromptRequestController extends Controller
             'progress' => 0
         ]);
 
-        $progress = 0;;
+        $progress = 0;
         $position = 1;
         for ($i = 1; $i <= $request->iterations; $i++) {
             foreach ($request->models as $model) {
@@ -53,11 +53,10 @@ class PromptRequestController extends Controller
                     new PromptRequestJobData(
                         $task,
                         $model,
-                        $position,
+                        $position++,
                         $progress += 100 / (count($request->models) * $request->iterations)
                     )
                 );
-                $position++;
             }
         }
 
