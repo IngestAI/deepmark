@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Data\PromptRequestJobData;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\TaskShowRequest;
 use App\Http\Requests\Api\TaskStoreRequest;
 use App\Http\Resources\Api\TasksResource;
 use App\Jobs\PromptRequestJob;
@@ -68,7 +69,11 @@ class TaskController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $task = Task::where('uuid', $id)->first();
+        if (!$task) {
+            return response()->json(['error' => 'Wrong task ID']);
+        }
+        return response()->json(['data' => TasksResource::make($task)]);
     }
 
     /**
