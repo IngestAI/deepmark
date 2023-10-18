@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api;
 
 use App\Enums\PromptRequestConditionEnum;
 use App\Enums\TaskStatusEnum;
 use App\Models\AIModel;
-use Illuminate\Support\Facades\Validator as ValidatorRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Validator as ValidatorRule;
 use Illuminate\Support\Str;
 use Spatie\Enum\Laravel\Rules\EnumRule;
 
-class PromptStoreRequest extends FormRequest
+class TaskStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

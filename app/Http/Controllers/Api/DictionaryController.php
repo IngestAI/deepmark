@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Enums\PromptRequestConditionEnum;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Api\AiModelResource;
+use App\Http\Resources\Api\ModelsResource;
 use App\Models\AIModel;
 
 class DictionaryController extends Controller
@@ -12,7 +12,7 @@ class DictionaryController extends Controller
     public function models()
     {
         return response()->json([
-            'data' => AiModelResource::make(AIModel::all())
+            'data' => ModelsResource::make(AIModel::all())
         ]);
     }
 
