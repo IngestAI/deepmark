@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class ModelsResource extends ResourceCollection
+class ModelTaskResource extends ResourceCollection
 {
     /**
      * Transform the resource into an array.
@@ -16,7 +16,7 @@ class ModelsResource extends ResourceCollection
     public function toArray(Request $request): array
     {
         return $this->collection->map(
-            fn($model) => ModelResource::make($model)->toArray($request)
+            fn($model) => $model->slug
         )->all();
     }
 }

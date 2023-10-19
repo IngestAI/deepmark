@@ -14,6 +14,9 @@ class ModelResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [$this->slug => $this->fullname];
+        return [
+            'value' => $this->slug,
+            'title' => $this->fullname,
+        ];
     }
 }
