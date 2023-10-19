@@ -2,11 +2,11 @@
 
 namespace App\Http\Resources\Api;
 
-use App\Enums\PromptRequestStatusEnum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class PromptsResource extends JsonResource
+class ModelsResource extends ResourceCollection
 {
     /**
      * Transform the resource into an array.
@@ -15,10 +15,8 @@ class PromptsResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
-            'prompt' => (string) $this->prompt,
-            'status' => PromptRequestStatusEnum::from($this->status)->label,
-            'position' => (int) $this->position,
-        ];
+        return $this->collection->map(
+            fn($model) => ModelResource::make($model)->toArray($request)
+        )->all();
     }
 }

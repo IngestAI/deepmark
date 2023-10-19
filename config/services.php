@@ -31,4 +31,19 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'openai' => [
+        'api_key' => env('OPENAI_API_KEY', ''),
+    ],
+
+    'cohere' => [
+        'api_key' => env('COHERE_API_KEY', ''),
+    ],
+
+    'anthropic' => [
+        'api_key' => env('ANTHROPIC_API_KEY', ''),
+    ],
+
+    'ai21' => [
+        'api_key' => env('AI21_API_KEY', ''),
+    ],
 ];

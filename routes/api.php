@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\Api\PromptRequestController;
+use App\Http\Controllers\Api\DictionaryController;
+use App\Http\Controllers\Api\TaskController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +15,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('api.bearerToken')
-    ->apiResource('/prompts', PromptRequestController::class);
+Route::group(['middleware' => 'api.bearerToken'], function () {
+    Route::apiResource('/tasks', TaskController::class);
+    Route::get('/models', [DictionaryController::class, 'models']);
+    Route::get('/conditions', [DictionaryController::class, 'conditions']);
+});
+
+Route::fallback(function(){
+    return response()->json([
+        'message' => 'Page Not Found.'
+    ], 404);
+});
+
+
+
+
 

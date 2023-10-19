@@ -2,11 +2,11 @@
 
 namespace App\Services\Ai\Models;
 
-use App\Services\Ai\Data\GptAiModelResponse;
+use App\Services\Ai\Data\OpenAiCompletionAiModelResponse;
 use OpenAI;
 use Spatie\LaravelData\Data;
 
-class GptAiModel implements AiModel
+class OpenAiCompletionAiModel implements AiModel
 {
     protected string $apiKey;
 
@@ -16,9 +16,9 @@ class GptAiModel implements AiModel
     }
     public function send(Data $request): Data
     {
-        return new GptAiModelResponse(
+        return new OpenAiCompletionAiModelResponse(
             OpenAI::client($this->apiKey)
-                ->chat()
+                ->completions()
                 ->create($request->toArray())
         );
     }

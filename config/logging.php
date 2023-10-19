@@ -126,6 +126,12 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        'tasks' => [
+            'driver' => 'custom',
+            'via' => App\Logs\TaskLogger::class,
+            'path' => storage_path('logs/tasks.log'),
+        ],
     ],
 
 ];
