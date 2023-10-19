@@ -13,4 +13,10 @@ export default defineConfig({
         }),
         react(),
     ],
+    resolve: {
+      alias: {
+        '_components': '/resources/js/components',
+        '_api': '/resources/js/api',
+      },
+    },
 });

@@ -2,9 +2,9 @@ import * as formik from 'formik';
 import * as yup from 'yup';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { Textarea } from '../../../components/textarea/texarea';
+import { Textarea } from '_components/textarea/texarea';
 
-export const ManageForm = ({ id }) => {
+export const ManageTaskForm = ({ id }) => {
     const { Formik } = formik;
 
     const schema = yup.object().shape({

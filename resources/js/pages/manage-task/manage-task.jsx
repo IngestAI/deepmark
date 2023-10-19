@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
-import { ManageForm } from './manage-form/manage-form';
+import { ManageTaskForm } from './manage-task-form/manage-task-form';
 
-export const Manage = () => {
+export const ManageTask = () => {
     const { id } = useParams();
     return (
         <div className="card">
@@ -13,7 +13,7 @@ export const Manage = () => {
                 </div>
             </div>
             <div className="card-body">
-                <ManageForm id={id} />
+                <ManageTaskForm id={id} />
             </div>
             <div className="card-footer align-items-center d-flex justify-content-between"></div>
         </div>
