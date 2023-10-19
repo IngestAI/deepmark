@@ -19,7 +19,11 @@ class DictionaryController extends Controller
     public function conditions()
     {
         return response()->json([
-            'data' => PromptRequestConditionEnum::toArray()
+            'data' => array_map(
+                fn($value, $title) => ['value' => $value, 'title' => $title],
+                PromptRequestConditionEnum::toValues(),
+                PromptRequestConditionEnum::toLabels(),
+            )
         ]);
     }
 }
