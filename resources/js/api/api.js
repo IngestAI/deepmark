@@ -9,6 +9,5 @@ export const getTasks = () => {
 }
 
 export const removeTask = id => {
-  //todo Need implement endpoint for remove task
-  console.log(id);
+  return instance.delete(`/api/tasks/${id}`)
 }

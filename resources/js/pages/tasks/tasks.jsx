@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import { TasksList } from '_components/tasks-list/tasks-list';
 import { useTasks } from './use-tasks';
-import { removeTask } from '_api/api';
 
 export const Tasks = () => {
     const {
       tasks,
+      onRemoveTask,
       isLoading,
     } = useTasks();
 
@@ -20,7 +20,7 @@ export const Tasks = () => {
             <div className="card-body">
               { isLoading
                 ? 'Loading'
-                : <TasksList tasks={tasks} onRemoveButtonClick={removeTask} />
+                : <TasksList tasks={tasks} onRemoveTask={onRemoveTask} />
               }
             </div>
             <div className="card-footer align-items-center d-flex justify-content-between"></div>
