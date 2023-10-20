@@ -17,6 +17,7 @@ export default defineConfig({
       alias: {
         '_components': '/resources/js/components',
         '_api': '/resources/js/api',
+        '_models': '/resources/js/models',
       },
     },
 });

@@ -7,11 +7,11 @@ export const useTasks = () => {
 
   const fetchTasks = () => {
     getTasks()
-        .then(tasks => {
-          const {data} = tasks;
-          setTasks(data)
-        })
-        .finally(() => setIsLoading(false));
+      .then(tasks => {
+        const {data} = tasks;
+        setTasks(data)
+      })
+      .finally(() => setIsLoading(false));
   }
 
   useEffect(() => {
