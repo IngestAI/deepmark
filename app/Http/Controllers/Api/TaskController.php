@@ -88,6 +88,11 @@ class TaskController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $task = Task::where('uuid', $id)->first();
+        if (!$task) {
+            return response()->json(['error' => 'Wrong task ID']);
+        }
+        $task->delete();
+        response()->json([]);
     }
 }
