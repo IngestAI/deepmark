@@ -17,6 +17,7 @@ class ModelResource extends JsonResource
         return [
             'value' => $this->slug,
             'title' => $this->fullname,
+            'icon' => $this->icon_path,
         ];
     }
 }
