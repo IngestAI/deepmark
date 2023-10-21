@@ -5,7 +5,7 @@ namespace App\Services\Ai\Data;
 use OpenAI\Responses\Embeddings\CreateResponse;
 use Spatie\LaravelData\Data;
 
-class OpenAiEmbeddingAiModelResponse extends Data implements AiModelResponse
+class OpenAiEmbeddingAiModelResponse extends Data implements AiVectorModelResponse
 {
     public function __construct(
         public CreateResponse $response
@@ -13,12 +13,12 @@ class OpenAiEmbeddingAiModelResponse extends Data implements AiModelResponse
 
     public function isSuccessful(): bool
     {
-        $id = $this->response->id ?? null;
-        return $id > 0;
+        $embeddings = $this->response->embeddings[0]->embedding ?? [];
+        return !empty($embeddings);
     }
 
-    public function getAnswer(): string
+    public function getVectors(): array
     {
-        return trim($this->response->choices[0]->text ?? '');
+        return $this->response->embeddings[0]->embedding ?? [];
     }
 }

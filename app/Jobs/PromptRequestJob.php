@@ -67,19 +67,19 @@ class PromptRequestJob implements ShouldQueue
         if ($response->isSuccessful()) {
             $answer = $response->getAnswer();
             $condition = $task->data['condition'] ?? '';
-            if ($condition === (string) PromptRequestConditionEnum::vectorSimilarity()) {
-                $embeddingModel = AiVectorModelEnum::textEmbeddingAda002();
-                $embeddingResponse = AiFactory::provider(AiProviderEnum::openai())
-                    ->model()
-                    ->send(new TextEmbeddingAda003AiModelRequest($answer));
-            }
-            $promptRequest->data = [
+            $strategy = ConditionStrategyContext::make($condition);
+            $data = [
                 'answer' => $answer,
-                'match' => ConditionStrategyContext::make($condition)->apply($answer, $task->data['term'])
+                'match' => $strategy->apply($answer, $task->data['term']),
             ];
+            if ($condition === (string) PromptRequestConditionEnum::vectorSimilarity()) {
+                $data['similarity'] = $strategy->similarity;
+            }
+            $promptRequest->data = $data;
             $promptRequest->status = (string) PromptRequestStatusEnum::success();
         } else {
             $promptRequest->status = (string) PromptRequestStatusEnum::failed();
+            Log::channel('tasks')->debug('Model: ' . $model->fullname);
             Log::channel('tasks')->debug('Wrong response: ' . json_encode($response->response));
         }
         $promptRequest->save();
