@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Data\QueryAiModelRequest;
+use App\Enums\PromptRequestConditionEnum;
 use App\Enums\PromptRequestStatusEnum;
 use App\Enums\TaskStatusEnum;
 use App\Models\AIModel;
@@ -10,6 +11,9 @@ use App\Models\AIProvider;
 use App\Models\PromptRequest;
 use App\Services\Ai\AiFactory;
 use App\Services\Ai\Conditions\ConditionStrategyContext;
+use App\Services\Ai\Data\TextEmbeddingAda003AiModelRequest;
+use App\Services\Ai\Enums\AiProviderEnum;
+use App\Services\Ai\Enums\AiVectorModelEnum;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -62,9 +66,16 @@ class PromptRequestJob implements ShouldQueue
 
         if ($response->isSuccessful()) {
             $answer = $response->getAnswer();
+            $condition = $task->data['condition'] ?? '';
+            if ($condition === (string) PromptRequestConditionEnum::vectorSimilarity()) {
+                $embeddingModel = AiVectorModelEnum::textEmbeddingAda002();
+                $embeddingResponse = AiFactory::provider(AiProviderEnum::openai())
+                    ->model()
+                    ->send(new TextEmbeddingAda003AiModelRequest($answer));
+            }
             $promptRequest->data = [
                 'answer' => $answer,
-                'match' => ConditionStrategyContext::make($task->data['condition'])->apply($answer, $task->data['term'])
+                'match' => ConditionStrategyContext::make($condition)->apply($answer, $task->data['term'])
             ];
             $promptRequest->status = (string) PromptRequestStatusEnum::success();
         } else {
