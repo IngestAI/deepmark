@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getTasksModels, getTask, getAcceptanceCriteria } from '_api/api';
+import { getTasksModels, getTask, getAcceptanceCriteria, createTask } from '_api/api';
 import { taskModel } from '_models/models';
 
 export const useManageTaskForm = id => {
@@ -32,6 +32,15 @@ export const useManageTaskForm = id => {
     })
   }
 
+  const onFormSubmit = values => {
+    if (!id) {
+      //todo temp converting array to string, need remove after backend changes
+      createTask({...values, models: values.models.join()}).then(res => console.log(res))
+    } else {
+      console.log('edit task')
+    }
+  }
+
   useEffect(() => {
     fetchTasksModels();
     fetchTaskData(id);
@@ -42,6 +51,7 @@ export const useManageTaskForm = id => {
     tasksModels,
     taskData,
     acceptanceCriteria,
+    onFormSubmit,
     isLoading,
   }
 }

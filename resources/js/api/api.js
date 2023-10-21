@@ -23,3 +23,7 @@ export const getTask = id => {
 export const getAcceptanceCriteria = () => {
   return instance.get('/api/conditions/').then(res => res.data);
 }
+
+export const createTask = data => {
+  return instance.post('/api/tasks/', data).then(res => res.data);
+}

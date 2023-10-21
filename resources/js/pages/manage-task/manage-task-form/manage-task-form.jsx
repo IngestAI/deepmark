@@ -8,13 +8,12 @@ import { useManageTaskForm } from './use-manage-task-form';
 export const ManageTaskForm = ({ id }) => {
     const { Formik } = formik;
     const {
+        isLoading,
         tasksModels,
         taskData,
         acceptanceCriteria,
-        isLoading
+        onFormSubmit,
     } = useManageTaskForm(id);
-
-    console.log('acceptanceCriteria', acceptanceCriteria)
 
     const schema = yup.object().shape({
         prompt: yup.string().required('Required')
@@ -25,9 +24,7 @@ export const ManageTaskForm = ({ id }) => {
           {isLoading ? 'Loading' : (
             <Formik
               validationSchema={schema}
-              onSubmit={() => {
-                  console.log('fff')
-              }}
+              onSubmit={values => onFormSubmit(values)}
               initialValues={taskData}
             >
                 {({ handleSubmit, handleChange, values, touched, errors }) => (
@@ -49,14 +46,25 @@ export const ManageTaskForm = ({ id }) => {
                               <h5 className="mt-2 mb-2">AI Models</h5>
                               { tasksModels.map(model => (
                                 <div key={model.value}>
-                                    <Form.Check
-                                      label={model.title}
-                                      name="models"
-                                      id={model.value}
-                                      value={model.value}
-                                      onChange={handleChange}
-                                      checked={values.models?.includes(model.value)}
-                                    />
+                                    <Form.Check id={model.value}>
+                                        <Form.Check.Input
+                                          type="checkbox"
+                                          name="models"
+                                          value={model.value}
+                                          onChange={handleChange}
+                                          checked={values.models?.includes(model.value)}
+                                        />
+                                        <Form.Check.Label>
+                                            <img
+                                              src={model.icon}
+                                              className="img-fluid me-1 mb-1"
+                                              height="19"
+                                              width="19"
+                                              alt=""
+                                            />
+                                            {model.title}
+                                        </Form.Check.Label>
+                                    </Form.Check>
                                 </div>
                               ))}
                           </div>
@@ -67,6 +75,7 @@ export const ManageTaskForm = ({ id }) => {
                                 type="number"
                                 name="iterations"
                                 value={values.iterations}
+                                min="1"
                                 onChange={handleChange}
                               />
                           </div>
