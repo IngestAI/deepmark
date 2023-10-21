@@ -3,10 +3,12 @@
 namespace App\Services\Ai\Providers;
 
 use App\Services\Ai\Enums\AiTextModelEnum;
+use App\Services\Ai\Enums\AiVectorModelEnum;
 use App\Services\Ai\Models\AiModel;
 use App\Services\Ai\Models\GptAiModel;
 use App\Services\Ai\Models\NullAiModel;
 use App\Services\Ai\Models\OpenAiCompletionAiModel;
+use App\Services\Ai\Models\OpenAiEmbeddingAiModel;
 
 class OpenAiProvider implements AiProvider
 {
@@ -23,6 +25,8 @@ class OpenAiProvider implements AiProvider
             case (string) AiTextModelEnum::textDavinci002():
             case (string) AiTextModelEnum::textDavinci003():
                 return new OpenAiCompletionAiModel();
+            case (string) AiVectorModelEnum::textEmbeddingAda002():
+                return new OpenAiEmbeddingAiModel();
         }
 
         return new NullAiModel();
