@@ -1,7 +1,7 @@
 <?php
 
 use App\Services\Ai\Enums\AiProviderEnum;
-use App\Services\Ai\Enums\AiTextModelEnum;
+use App\Services\Ai\Enums\AiVectorModelEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
@@ -15,7 +15,7 @@ return new class extends Migration
         $date = date('Y-m-d H:i:s');
         DB::table('a_i_models')->insert([
             'provider_id' => DB::table('a_i_providers')->where('slug', AiProviderEnum::openai()->value)->pluck('id')->first(),
-            'slug' => AiTextModelEnum::textEmbeddingAda002(),
+            'slug' => AiVectorModelEnum::textEmbeddingAda002(),
             'name' => 'Text Embedding Ada 002',
             'active' => true,
             'input_format' => 'text',
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::table('a_i_models')->where('slug', AiTextModelEnum::textEmbeddingAda002());
+        DB::table('a_i_models')->where('slug', AiVectorModelEnum::textEmbeddingAda002());
     }
 };
