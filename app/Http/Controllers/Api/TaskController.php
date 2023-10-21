@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Data\PromptRequestJobData;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\TaskShowRequest;
 use App\Http\Requests\Api\TaskStoreRequest;
 use App\Http\Resources\Api\TasksResource;
 use App\Jobs\PromptRequestJob;
@@ -66,13 +67,13 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Task $task, TaskShowRequest $request)
     {
-        $task = Task::where('uuid', $id)->first();
-        if (!$task) {
-            return response()->json(['error' => 'Wrong task ID']);
+        $data = TasksResource::make($task);
+        if (!empty($request->scope)) {
+            $data = collect($data)->only($request->scope)->all();
         }
-        return response()->json(['data' => TasksResource::make($task)]);
+        return response()->json(['data' => $data]);
     }
 
     /**
@@ -86,12 +87,8 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Task $task)
     {
-        $task = Task::where('uuid', $id)->first();
-        if (!$task) {
-            return response()->json(['error' => 'Wrong task ID']);
-        }
         $task->delete();
         response()->json([]);
     }

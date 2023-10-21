@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::table('a_i_models')->where('slug', AiVectorModelEnum::textEmbeddingAda002());
+        DB::table('a_i_models')->where('slug', AiVectorModelEnum::textEmbeddingAda002())->delete();
     }
 };
