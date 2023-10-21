@@ -20,7 +20,10 @@ class DictionaryController extends Controller
     {
         return response()->json([
             'data' => array_map(
-                fn($value, $title) => ['value' => $value, 'title' => $title],
+                fn($value, $title) => [
+                    'value' => $value,
+                    'title' => $title
+                ],
                 PromptRequestConditionEnum::toValues(),
                 PromptRequestConditionEnum::toLabels(),
             )

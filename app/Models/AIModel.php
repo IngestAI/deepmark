@@ -11,6 +11,8 @@ class AIModel extends Model
 {
     use HasFactory;
 
+    public const ICON_PATH = 'images/models';
+
     public function scopeActive(Builder $query)
     {
         $query->where('active', 1);
@@ -34,6 +36,13 @@ class AIModel extends Model
                 $providerName = $provider->name ?? '';
                 return trim($providerName . ' ' . $this->name);
             }
+        );
+    }
+
+    public function iconPath(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->icon ? config('app.url') . '/' . self::ICON_PATH . '/' . $this->icon : '',
         );
     }
 }
