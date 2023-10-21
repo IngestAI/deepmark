@@ -19,3 +19,7 @@ export const getTasksModels = () => {
 export const getTask = id => {
   return instance.get(`/api/tasks/${id}`).then(res => res.data);
 }
+
+export const getAcceptanceCriteria = () => {
+  return instance.get('/api/conditions/').then(res => res.data);
+}
