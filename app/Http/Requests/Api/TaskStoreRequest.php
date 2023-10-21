@@ -39,9 +39,9 @@ class TaskStoreRequest extends FormRequest
         );
 
         return [
-            'models' => 'modelSlugs',
+            'models' => ['required', 'modelSlugs'],
             'prompt' => ['required'],
-            'iterations' => ['numeric', 'max:10'],
+            'iterations' => ['numeric', 'min:1', 'max:10'],
             'condition' => ['required', new EnumRule(PromptRequestConditionEnum::class)],
             'term' => ['required'],
         ];
@@ -69,6 +69,7 @@ class TaskStoreRequest extends FormRequest
             'models' => 'The models are wrong',
             'prompt' => 'The prompt is missed',
             'iterations.numeric' => 'The iterations should be numeric',
+            'iterations.min' => 'The min iteration counter should be 1',
             'iterations.max' => 'The max iteration counter should be 10',
             'condition' => 'The condition is wrong',
         ];
