@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { getTasksModels, getTask, getAcceptanceCriteria, createTask } from '_api/api';
+import { useEffect, useState, useRef } from 'react';
+import { getTasksModels, getTask, getAcceptanceCriteria, createTask, getTaskStatus, getTaskResponses } from '_api/api';
 import { taskModel } from '_models/models';
 
 export const useManageTaskForm = id => {
@@ -7,6 +7,17 @@ export const useManageTaskForm = id => {
   const [tasksModels, setTasksModels] = useState([]);
   const [taskData, setTaskData] = useState(taskModel);
   const [acceptanceCriteria, setAcceptanceCriteria] = useState([]);
+  const [progress, setProgress] = useState(0);
+  const [progressVisible, setProgressVisible] = useState(false);
+  const [resultsResponse, setResultsResponse] = useState([]);
+
+  const intervalRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, []);
 
   const fetchTasksModels = () => {
     getTasksModels()
@@ -32,10 +43,36 @@ export const useManageTaskForm = id => {
     })
   }
 
+  const fetchResults = id => {
+    getTaskResponses(id).then(results => {
+      const {data} = results;
+      setResultsResponse(data.responses);
+    })
+  }
+
+  const stopCheckingTaskProgress = id => {
+    clearInterval(intervalRef.current);
+    setProgressVisible(false);
+    fetchResults(id);
+  }
+
+  const checkTaskProgress = id => {
+    intervalRef.current = setInterval(() => {
+      getTaskStatus(id).then(res => {
+        const {progress} = res.data;
+        setProgress(progress);
+        if (progress >= 100) stopCheckingTaskProgress(id);
+      })
+    }, 1000);
+  }
+
   const onFormSubmit = values => {
     if (!id) {
-      //todo temp converting array to string, need remove after backend changes
-      createTask({...values, models: values.models.join()}).then(res => console.log(res))
+      createTask(values).then(res => {
+        const {uuid} = res;
+        setProgressVisible(true);
+        checkTaskProgress(uuid);
+      })
     } else {
       console.log('edit task')
     }
@@ -48,10 +85,13 @@ export const useManageTaskForm = id => {
   }, []);
 
   return {
+    isLoading,
     tasksModels,
     taskData,
+    progressVisible,
+    progress,
     acceptanceCriteria,
+    resultsResponse,
     onFormSubmit,
-    isLoading,
   }
 }
