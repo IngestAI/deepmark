@@ -22,11 +22,6 @@ class TaskStoreRequest extends FormRequest
         return true;
     }
 
-    protected function prepareForValidation()
-    {
-        $this->models = explode(',', $this->models);
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *

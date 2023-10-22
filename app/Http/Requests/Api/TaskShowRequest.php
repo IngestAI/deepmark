@@ -22,11 +22,6 @@ class TaskShowRequest extends FormRequest
         return true;
     }
 
-    protected function prepareForValidation()
-    {
-        $this->scope = explode(',', $this->scope);
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -35,6 +30,36 @@ class TaskShowRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'scope' => ['string', 'min:1'],
         ];
+    }
+
+    protected function passedValidation()
+    {
+        $this->merge([
+            'scope' => !empty($this->scope) ? explode(',', $this->scope) : [],
+        ]);
+    }
+
+    public function messages(): array
+    {
+        return [
+            'scope' => 'The scope field is wrong',
+        ];
+    }
+
+    /**
+     * Handle a failed validation attempt.
+     *
+     * @param  \Illuminate\Contracts\Validation\Validator  $validator
+     * @return void
+     *
+     * @throws \Illuminate\Http\Exceptions\HttpResponseException
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'errors' => $validator->errors()
+        ]));
     }
 }
