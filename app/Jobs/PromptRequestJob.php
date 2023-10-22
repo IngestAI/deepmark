@@ -9,16 +9,16 @@ use App\Enums\TaskStatusEnum;
 use App\Models\AIModel;
 use App\Models\AIProvider;
 use App\Models\PromptRequest;
+use App\Models\Task;
+use App\Models\TaskModel;
 use App\Services\Ai\AiFactory;
 use App\Services\Ai\Conditions\ConditionStrategyContext;
-use App\Services\Ai\Data\TextEmbeddingAda003AiModelRequest;
-use App\Services\Ai\Enums\AiProviderEnum;
-use App\Services\Ai\Enums\AiVectorModelEnum;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Spatie\LaravelData\Data;
 
@@ -92,6 +92,67 @@ class PromptRequestJob implements ShouldQueue
             $task->fill([
                 'status' => (string) TaskStatusEnum::success()
             ])->save();
+
+            if ($condition === (string) PromptRequestConditionEnum::vectorSimilarity()) {
+                $this->calculateMinMaxScore($task);
+            } else {
+                $this->calculateScore($task);
+            }
+        }
+    }
+
+    private function calculateScore(Task $task)
+    {
+        $matchTrueQueryResult = DB::select('SELECT model_id, COUNT(id) as cnt FROM prompt_requests WHERE task_id = :taskId AND JSON_EXTRACT(data, "$.match") = true GROUP BY model_id', ['taskId' => $task->id]);
+        $matchFalseQueryResult = DB::select('SELECT model_id, COUNT(id) as cnt FROM prompt_requests WHERE task_id = :taskId AND JSON_EXTRACT(data, "$.match") = false GROUP BY model_id', ['taskId' => $task->id]);
+        $modelIds =  $task->promptRequests->map(
+            fn($promptRequest) => $promptRequest->model_id
+        )->all();
+
+        $matchTrue = $matchFalse = [];
+        foreach ($matchTrueQueryResult as $item) {
+            $matchTrue[$item->model_id] = $item->cnt;
+        }
+        foreach ($matchFalseQueryResult as $item) {
+            $matchFalse[$item->model_id] = $item->cnt;
+        }
+
+        $data['score'] = 0;
+        foreach (array_unique($modelIds) as $modelId) {
+            $taskModel = new TaskModel();
+            if (!isset($matchTrue[$modelId]) && isset($matchFalse[$modelId])) {
+                $data['score'] = 0;
+            }
+
+            if (!isset($matchFalse[$modelId]) && isset($matchTrue[$modelId])) {
+                $data['score'] = 100;
+            }
+
+            if (isset($matchTrue[$modelId]) && isset($matchFalse[$modelId])) {
+                $data['score'] = $matchTrue[$modelId] / ($matchTrue[$modelId] + $matchFalse[$modelId]) * 100;
+            }
+
+            $taskModel->task_id = $task->id;
+            $taskModel->model_id = $modelId;
+            $taskModel->match = json_encode($data);
+            $taskModel->save();
+        }
+    }
+
+    private function calculateMinMaxScore(Task $task)
+    {
+        $minMaxQueryResult = DB::select('SELECT model_id, MIN(JSON_EXTRACT(data, "$.similarity")) as min, MAX(JSON_EXTRACT(data, "$.similarity")) as max, AVG(JSON_EXTRACT(data, "$.similarity")) as avg FROM prompt_requests WHERE task_id = :taskId GROUP BY model_id', ['taskId' => $task->id]);
+
+        foreach ($minMaxQueryResult as $resultItem) {
+            $taskModel = new TaskModel();
+            $taskModel->task_id = $task->id;
+            $taskModel->model_id = $resultItem->model_id;
+            $taskModel->match = json_encode([
+                'min' => $resultItem->min,
+                'max' => $resultItem->max,
+                'avg' => $resultItem->avg
+            ]);
+            $taskModel->save();
         }
     }
 }
