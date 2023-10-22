@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 
 class VectorSimilarityConditionStrategy implements ConditionStrategyInterface
 {
+    private const MIN = 0.6;
     public float $similarity = 0;
 
     public function apply(string $modelAnswer, string $term): bool
@@ -34,7 +35,7 @@ class VectorSimilarityConditionStrategy implements ConditionStrategyInterface
 
         Log::channel('tasks')->debug('Similarity: ' . json_encode($this->similarity));
 
-        if (empty($this->similarity)) return false;
+        if (empty($this->similarity) || $this->similarity < self::MIN) return false;
 
         return true;
     }
