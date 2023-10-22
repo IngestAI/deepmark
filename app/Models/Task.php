@@ -39,6 +39,10 @@ class Task extends Model
             $task->progress = 0;
             $task->status = TaskStatusEnum::waiting()->value;
         });
+
+        static::deleted(function ($task) {
+            $task->promptRequests()->delete();
+        });
     }
 
     public function scopeFinished(Builder $query)

@@ -16,14 +16,14 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(TaskShowRequest $request)
     {
         return response()->json([
             'data' => TasksResource::collection(
                 Task::finished()
                     ->orderBy('id', 'desc')
                     ->get()
-            )
+            )->toArray($request)
         ]);
     }
 
@@ -69,10 +69,7 @@ class TaskController extends Controller
      */
     public function show(Task $task, TaskShowRequest $request)
     {
-        $data = TasksResource::make($task);
-        if (!empty($request->scope)) {
-            $data = collect($data)->only($request->scope)->all();
-        }
+        $data = TasksResource::make($task)->toArray($request);
         return response()->json(['data' => $data]);
     }
 
