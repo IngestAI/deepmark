@@ -12,7 +12,7 @@ class DictionaryController extends Controller
     public function models()
     {
         return response()->json([
-            'data' => ModelsResource::make(AIModel::all())
+            'data' => ModelsResource::make(AIModel::text()->get())
         ]);
     }
 
