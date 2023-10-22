@@ -97,7 +97,7 @@ class PromptRequestJob implements ShouldQueue
             }
         } catch (Throwable $e) {
             $task->fill([
-                'progress' => $this->data->progress,
+                'progress' => $progress,
                 'status' => (string) TaskStatusEnum::failed()
             ])->save();
 
