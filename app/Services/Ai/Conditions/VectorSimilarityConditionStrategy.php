@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 
 class VectorSimilarityConditionStrategy implements ConditionStrategyInterface
 {
-    private const MIN = 0.6;
+    private const MIN = 0.9;
     public float $similarity = 0;
 
     public function apply(string $modelAnswer, string $term): bool
