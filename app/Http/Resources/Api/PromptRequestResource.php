@@ -20,7 +20,7 @@ class PromptRequestResource extends JsonResource
             'answer' => $this->data['answer'] ?? '',
             'match' => $this->data['match'] ?? false,
             'status' => PromptRequestStatusEnum::from($this->status)->label,
-            'model' => $this->model->slug,
+            'model' => $this->model->fullname,
         ];
     }
 }

@@ -21,6 +21,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Spatie\LaravelData\Data;
+use Throwable;
 
 class PromptRequestJob implements ShouldQueue
 {
@@ -93,5 +94,13 @@ class PromptRequestJob implements ShouldQueue
                 'status' => (string) TaskStatusEnum::success()
             ])->save();
         }
+    }
+
+    public function failed(Throwable|null $e)
+    {
+        $this->data->task->fill([
+            'progress' => $this->data->progress,
+            'status' => (string) TaskStatusEnum::failed()
+        ])->save();
     }
 }
