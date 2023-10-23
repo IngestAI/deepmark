@@ -125,9 +125,9 @@ class PromptRequestJob implements ShouldQueue
         foreach ($results as $modelId => $matches) {
             $trueModels = array_map(fn($item) => $item === true, $matches);
             $data[] = [
-                    'task_id' => $task->id,
-                    'model_id' => $modelId,
-                    'match' => json_encode(['score' => count($trueModels) / count($matches) * 100]),
+                'task_id' => $task->id,
+                'model_id' => $modelId,
+                'match' => json_encode(['score' => count($trueModels) / count($matches) * 100]),
             ];
         }
         TaskModel::upsert($data, ['task_id', 'model_id']);
