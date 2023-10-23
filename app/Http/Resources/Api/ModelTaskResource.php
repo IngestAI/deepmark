@@ -16,7 +16,10 @@ class ModelTaskResource extends ResourceCollection
     public function toArray(Request $request): array
     {
         return $this->collection->map(
-            fn($model) => $model->slug
+            fn($taskModel) => [
+                'model' => $taskModel->model->fullname,
+                'result' => $taskModel->match,
+            ],
         )->all();
     }
 }

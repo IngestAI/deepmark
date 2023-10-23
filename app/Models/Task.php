@@ -30,6 +30,11 @@ class Task extends Model
         return $this->hasMany(PromptRequest::class)->orderBy('prompt_requests.position');
     }
 
+    public function taskModels(): HasMany
+    {
+        return $this->hasMany(TaskModel::class);
+    }
+
     public static function boot()
     {
         parent::boot();
@@ -42,6 +47,7 @@ class Task extends Model
 
         static::deleted(function ($task) {
             $task->promptRequests()->delete();
+            $task->taskModels()->delete();
         });
     }
 
