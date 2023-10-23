@@ -121,39 +121,41 @@ class PromptRequestJob implements ShouldQueue
             $results[$promptRequest->model_id][] = $promptRequest->data['match'] ?? false;
         });
 
+        $data = [];
         foreach ($results as $modelId => $matches) {
             $trueModels = array_map(fn($item) => $item === true, $matches);
-            TaskModel::create(
-                [
+            $data[] = [
                     'task_id' => $task->id,
                     'model_id' => $modelId,
-                    'match' => ['score' => count($trueModels) / count($matches) * 100],
-                ]
-            );
+                    'match' => json_encode(['score' => count($trueModels) / count($matches) * 100]),
+            ];
         }
+        TaskModel::upsert($data, ['task_id', 'model_id']);
     }
 
     private function calculateMinMaxScore(Task $task)
     {
         $results = [];
         $task->promptRequests()->each(function($promptRequest) use (&$results) {
+            Log::channel('tasks')->debug(json_encode($promptRequest->data));
             $results[$promptRequest->model_id][] = $promptRequest->data['similarity'] ?? 0;
         });
 
+        $data = [];
         foreach ($results as $modelId => $similarities) {
             $min = min($similarities);
             $max = max($similarities);
-            TaskModel::create(
-                [
-                    'task_id' => $task->id,
-                    'model_id' => $modelId,
-                    'match' => [
-                        'min' => $min,
-                        'max' => $max,
-                        'average' => ($min + $max) / 2,
-                    ],
-                ]
-            );
+            $data[] = [
+                'task_id' => $task->id,
+                'model_id' => $modelId,
+                'match' => json_encode([
+                    'min' => $min,
+                    'max' => $max,
+                    'average' => ($min + $max) / 2,
+                ]),
+            ];
         }
+
+        TaskModel::upsert($data, ['task_id', 'model_id']);
     }
 }
