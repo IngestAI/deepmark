@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => 'api.bearerToken'], function () {
     Route::group(['prefix' => 'tasks'], function () {
         Route::get('/{task:uuid}', [TaskController::class, 'show']);
-        Route::delete('/{task:uuid}', [TaskController::class, 'delete']);
+        Route::delete('/{task:uuid}', [TaskController::class, 'destroy']);
         Route::post('/', [TaskController::class, 'store']);
         Route::get('/', [TaskController::class, 'index']);
     });

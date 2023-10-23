@@ -21,6 +21,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Spatie\LaravelData\Data;
+use Throwable;
 
 class PromptRequestJob implements ShouldQueue
 {
@@ -60,44 +61,56 @@ class PromptRequestJob implements ShouldQueue
             'status' => (string) PromptRequestStatusEnum::waiting(),
         ]);
 
-        $response = AiFactory::provider($provider['slug'])
-            ->model($model)
-            ->send($request->model);
+        try {
+            $response = AiFactory::provider($provider['slug'])
+                ->model($model)
+                ->send($request->model);
 
-        if ($response->isSuccessful()) {
-            $answer = $response->getAnswer();
-            $condition = $task->data['condition'] ?? '';
-            $strategy = ConditionStrategyContext::make($condition);
-            $data = [
-                'answer' => $answer,
-                'match' => $strategy->apply($answer, $task->data['term']),
-            ];
-            if ($condition === (string) PromptRequestConditionEnum::vectorSimilarity()) {
-                $data['similarity'] = $strategy->similarity;
+            if ($response->isSuccessful()) {
+                $answer = $response->getAnswer();
+                $condition = $task->data['condition'] ?? '';
+                $strategy = ConditionStrategyContext::make($condition);
+                $data = [
+                    'answer' => $answer,
+                    'match' => $strategy->apply($answer, $task->data['term']),
+                ];
+                if ($condition === (string) PromptRequestConditionEnum::vectorSimilarity()) {
+                    $data['similarity'] = $strategy->similarity;
+                }
+                $promptRequest->data = $data;
+                $promptRequest->status = (string) PromptRequestStatusEnum::success();
+
+                if ($condition === (string) PromptRequestConditionEnum::vectorSimilarity()) {
+                    $this->calculateMinMaxScore($task);
+                } else {
+                    $this->calculateScore($task);
+                }
+            } else {
+                $promptRequest->status = (string) PromptRequestStatusEnum::failed();
+                Log::channel('tasks')->debug('Model: ' . $model->fullname);
+                Log::channel('tasks')->debug('Wrong response: ' . json_encode($response->response));
             }
-            $promptRequest->data = $data;
-            $promptRequest->status = (string) PromptRequestStatusEnum::success();
-        } else {
-            $promptRequest->status = (string) PromptRequestStatusEnum::failed();
-            Log::channel('tasks')->debug('Model: ' . $model->fullname);
-            Log::channel('tasks')->debug('Wrong response: ' . json_encode($response->response));
-        }
-        $promptRequest->save();
+            $promptRequest->save();
 
-        $task->fill([
-            'progress' => $progress
-        ])->save();
-
-        if ($task->progress == 100) {
             $task->fill([
-                'status' => (string) TaskStatusEnum::success()
+                'progress' => $progress
             ])->save();
 
-            if ($condition === (string) PromptRequestConditionEnum::vectorSimilarity()) {
-                $this->calculateMinMaxScore($task);
-            } else {
-                $this->calculateScore($task);
+            if ($task->progress == 100) {
+                $task->fill([
+                    'status' => (string) TaskStatusEnum::success()
+                ])->save();
             }
+        } catch (Throwable $e) {
+            Log::channel('tasks')->error('Error: ' . $e->getMessage());
+            $promptRequest->fill([
+                'status' => (string) PromptRequestStatusEnum::failed(),
+                'data' => ['error' => $e->getMessage()]
+            ])->save();
+            $task->fill([
+                'progress' => $progress,
+                'status' => (string) TaskStatusEnum::failed()
+            ])->save();
         }
     }
 

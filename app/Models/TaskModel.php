@@ -12,6 +12,6 @@ class TaskModel extends Model
     use HasFactory;
 
     protected $casts = [
-        'data' => 'json'
+        'match' => 'json'
     ];
 }
