@@ -116,56 +116,44 @@ class PromptRequestJob implements ShouldQueue
 
     private function calculateScore(Task $task)
     {
-        $matchTrueQueryResult = PromptRequest::getModelsMatches($task->id);
-        $matchFalseQueryResult = PromptRequest::getModelsMatches($task->id, false);
-        $modelIds = $task->promptRequests->pluck('model_id')->all();
+        $results = [];
+        $task->promptRequests()->each(function($promptRequest) use (&$results) {
+            $results[$promptRequest->model_id][] = $promptRequest->data['match'] ?? false;
+        });
 
-        $matchTrue = $matchFalse = [];
-        foreach ($matchTrueQueryResult as $item) {
-            $matchTrue[$item->model_id] = $item->cnt;
-        }
-        foreach ($matchFalseQueryResult as $item) {
-            $matchFalse[$item->model_id] = $item->cnt;
-        }
-
-        $data['score'] = 0;
-        foreach (array_unique($modelIds) as $modelId) {
-            $taskModel = new TaskModel();
-            if (!isset($matchTrue[$modelId]) && isset($matchFalse[$modelId])) {
-                $data['score'] = 0;
-            }
-
-            if (!isset($matchFalse[$modelId]) && isset($matchTrue[$modelId])) {
-                $data['score'] = 100;
-            }
-
-            if (isset($matchTrue[$modelId]) && isset($matchFalse[$modelId])) {
-                $data['score'] = $matchTrue[$modelId] / ($matchTrue[$modelId] + $matchFalse[$modelId]) * 100;
-            }
-
-            $taskModel->task_id = $task->id;
-            $taskModel->model_id = $modelId;
-            $taskModel->match = $data;
-            $taskModel->save();
+        foreach ($results as $modelId => $matches) {
+            $trueModels = array_map(fn($item) => $item === true, $matches);
+            TaskModel::create(
+                [
+                    'task_id' => $task->id,
+                    'model_id' => $modelId,
+                    'match' => ['score' => count($trueModels) / count($matches) * 100],
+                ]
+            );
         }
     }
 
     private function calculateMinMaxScore(Task $task)
     {
-        $minMaxQueryResult = PromptRequest::selectRaw('model_id, MIN(JSON_EXTRACT(data, "$.similarity")) as min, MAX(JSON_EXTRACT(data, "$.similarity")) as max, AVG(JSON_EXTRACT(data, "$.similarity")) as avg')
-            ->where('task_id', $task->id)
-            ->groupBy('model_id');
+        $results = [];
+        $task->promptRequests()->each(function($promptRequest) use (&$results) {
+            $results[$promptRequest->model_id][] = $promptRequest->data['similarity'] ?? 0;
+        });
 
-        foreach ($minMaxQueryResult as $resultItem) {
-            $taskModel = new TaskModel();
-            $taskModel->task_id = $task->id;
-            $taskModel->model_id = $resultItem->model_id;
-            $taskModel->match = [
-                'min' => $resultItem->min,
-                'max' => $resultItem->max,
-                'avg' => $resultItem->avg
-            ];
-            $taskModel->save();
+        foreach ($results as $modelId => $similarities) {
+            $min = min($similarities);
+            $max = max($similarities);
+            TaskModel::create(
+                [
+                    'task_id' => $task->id,
+                    'model_id' => $modelId,
+                    'match' => [
+                        'min' => $min,
+                        'max' => $max,
+                        'average' => ($min + $max) / 2,
+                    ],
+                ]
+            );
         }
     }
 }

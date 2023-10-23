@@ -14,4 +14,10 @@ class TaskModel extends Model
     protected $casts = [
         'match' => 'json'
     ];
+
+    protected $fillable = [
+        'task_id',
+        'model_id',
+        'match',
+    ];
 }
