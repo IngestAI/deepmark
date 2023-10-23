@@ -29,7 +29,6 @@ class TasksResource extends JsonResource
                 'status' => TaskStatusEnum::from($this->status)->label,
                 'progress' => (int) $this->progress,
                 'statistics' => ModelTaskResource::make($this->taskModels),
-                'responses' => PromptRequestResource::collection($this->promptRequests),
             ];
         }
         $data['uuid'] = $this->uuid ?? '';
@@ -52,13 +51,10 @@ class TasksResource extends JsonResource
             $data['progress'] = (int) $this->progress;
         }
         if (in_array('iterations', $request->scope)) {
-            $data['iterations'] = ModelTaskResource::make(AIModel::whereIn('slug', $modelSlugs)->get());
+            $data['iterations'] = $this->data['iterations'] ?? 1;
         }
         if (in_array('statistics', $request->models)) {
             $data['statistics'] = ModelTaskResource::make($this->taskModels);
-        }
-        if (in_array('responses', $request->scope)) {
-            $data['responses'] = PromptRequestResource::collection($this->promptRequests);
         }
         return $data;
     }
