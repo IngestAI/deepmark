@@ -28,7 +28,7 @@ class TasksResource extends JsonResource
                 'condition' => PromptRequestConditionEnum::from($this->data['condition'] ?? PromptRequestConditionEnum::equal())->label,
                 'status' => TaskStatusEnum::from($this->status)->label,
                 'progress' => (int) $this->progress,
-                'models' => ModelTaskResource::make(AIModel::whereIn('slug', $modelSlugs)->get()),
+                'models' => ModelTaskResource::make($this->taskModels),
                 'responses' => PromptRequestResource::collection($this->promptRequests),
             ];
         }
@@ -53,6 +53,9 @@ class TasksResource extends JsonResource
         }
         if (in_array('iterations', $request->scope)) {
             $data['iterations'] = ModelTaskResource::make(AIModel::whereIn('slug', $modelSlugs)->get());
+        }
+        if (in_array('statistics', $request->models)) {
+            $data['statistics'] = ModelTaskResource::make($this->taskModels);
         }
         if (in_array('responses', $request->scope)) {
             $data['responses'] = PromptRequestResource::collection($this->promptRequests);

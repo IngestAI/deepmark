@@ -137,7 +137,6 @@ class PromptRequestJob implements ShouldQueue
     {
         $results = [];
         $task->promptRequests()->each(function($promptRequest) use (&$results) {
-            Log::channel('tasks')->debug(json_encode($promptRequest->data));
             $results[$promptRequest->model_id][] = $promptRequest->data['similarity'] ?? 0;
         });
 

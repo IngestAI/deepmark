@@ -20,4 +20,9 @@ class TaskModel extends Model
         'model_id',
         'match',
     ];
+
+    public function model(): BelongsTo
+    {
+        return $this->belongsTo(AIModel::class);
+    }
 }
