@@ -30,6 +30,11 @@ class Task extends Model
         return $this->hasMany(PromptRequest::class)->orderBy('prompt_requests.position');
     }
 
+    public function models(): HasMany
+    {
+        return $this->hasMany(TaskModel::class);
+    }
+
     public static function boot()
     {
         parent::boot();
@@ -38,6 +43,11 @@ class Task extends Model
             $task->uuid = Str::uuid();
             $task->progress = 0;
             $task->status = TaskStatusEnum::waiting()->value;
+        });
+
+        static::deleted(function ($task) {
+            $task->promptRequests()->delete();
+            $task->models()->delete();
         });
     }
 

@@ -103,11 +103,9 @@ class PromptRequestJob implements ShouldQueue
 
     private function calculateScore(Task $task)
     {
-        $matchTrueQueryResult = DB::select('SELECT model_id, COUNT(id) as cnt FROM prompt_requests WHERE task_id = :taskId AND JSON_EXTRACT(data, "$.match") = true GROUP BY model_id', ['taskId' => $task->id]);
-        $matchFalseQueryResult = DB::select('SELECT model_id, COUNT(id) as cnt FROM prompt_requests WHERE task_id = :taskId AND JSON_EXTRACT(data, "$.match") = false GROUP BY model_id', ['taskId' => $task->id]);
-        $modelIds =  $task->promptRequests->map(
-            fn($promptRequest) => $promptRequest->model_id
-        )->all();
+        $matchTrueQueryResult = PromptRequest::getModelsMatches($task->id);
+        $matchFalseQueryResult = PromptRequest::getModelsMatches($task->id, false);
+        $modelIds = $task->promptRequests->pluck('model_id')->all();
 
         $matchTrue = $matchFalse = [];
         foreach ($matchTrueQueryResult as $item) {
@@ -134,24 +132,26 @@ class PromptRequestJob implements ShouldQueue
 
             $taskModel->task_id = $task->id;
             $taskModel->model_id = $modelId;
-            $taskModel->match = json_encode($data);
+            $taskModel->match = $data;
             $taskModel->save();
         }
     }
 
     private function calculateMinMaxScore(Task $task)
     {
-        $minMaxQueryResult = DB::select('SELECT model_id, MIN(JSON_EXTRACT(data, "$.similarity")) as min, MAX(JSON_EXTRACT(data, "$.similarity")) as max, AVG(JSON_EXTRACT(data, "$.similarity")) as avg FROM prompt_requests WHERE task_id = :taskId GROUP BY model_id', ['taskId' => $task->id]);
+        $minMaxQueryResult = PromptRequest::selectRaw('model_id, MIN(JSON_EXTRACT(data, "$.similarity")) as min, MAX(JSON_EXTRACT(data, "$.similarity")) as max, AVG(JSON_EXTRACT(data, "$.similarity")) as avg')
+            ->where('task_id', $task->id)
+            ->groupBy('model_id');
 
         foreach ($minMaxQueryResult as $resultItem) {
             $taskModel = new TaskModel();
             $taskModel->task_id = $task->id;
             $taskModel->model_id = $resultItem->model_id;
-            $taskModel->match = json_encode([
+            $taskModel->match = [
                 'min' => $resultItem->min,
                 'max' => $resultItem->max,
                 'avg' => $resultItem->avg
-            ]);
+            ];
             $taskModel->save();
         }
     }

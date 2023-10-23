@@ -10,4 +10,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class TaskModel extends Model
 {
     use HasFactory;
+
+    protected $casts = [
+        'data' => 'json'
+    ];
 }
