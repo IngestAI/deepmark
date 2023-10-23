@@ -28,7 +28,7 @@ class TasksResource extends JsonResource
                 'condition' => PromptRequestConditionEnum::from($this->data['condition'] ?? PromptRequestConditionEnum::equal())->label,
                 'status' => TaskStatusEnum::from($this->status)->label,
                 'progress' => (int) $this->progress,
-                'models' => ModelTaskResource::make($this->taskModels),
+                'statistics' => ModelTaskResource::make($this->taskModels),
                 'responses' => PromptRequestResource::collection($this->promptRequests),
             ];
         }
