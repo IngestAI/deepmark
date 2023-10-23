@@ -31,7 +31,7 @@ class TaskStoreRequest extends FormRequest
     {
         $this->models = is_array($this->models) ? $this->models : explode(',', $this->models);
         ValidatorRule::extend('modelSlugs',
-            fn() => AIModel::whereIn('slug', $this->models)->count() === $this->models
+            fn() => AIModel::whereIn('slug', $this->models)->count() === count($this->models)
         );
 
         return [
