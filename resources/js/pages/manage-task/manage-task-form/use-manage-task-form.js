@@ -63,20 +63,36 @@ export const useManageTaskForm = id => {
         const {progress} = res.data;
         setProgress(progress);
         if (progress >= 100) stopCheckingTaskProgress(id);
+      }).catch(() => {
+        stopCheckingTaskProgress(id);
       })
     }, 1000);
   }
 
-  const onFormSubmit = values => {
+  const onFormSubmit = (values, actions) => {
     if (!id) {
         createTask(values).then(res => {
-          const {errors} = res;
-          console.log(errors)
-          if (!errors) {
-            const {uuid} = res;
+          const {uuid} = res;
+          if (uuid) {
             setProgressVisible(true);
             checkTaskProgress(uuid);
           }
+        }).catch(error => {
+          const {
+            prompt,
+            models,
+            condition,
+            iterations,
+            term
+          } = error.response?.data.errors;
+
+          actions.setErrors({
+            prompt,
+            models,
+            condition,
+            iterations,
+            term,
+          })
         })
     } else {
       console.log('edit task')

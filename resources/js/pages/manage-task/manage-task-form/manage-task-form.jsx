@@ -22,8 +22,8 @@ export const ManageTaskForm = ({ id }) => {
     } = useManageTaskForm(id);
 
     const schema = yup.object().shape({
-        //prompt: yup.string().required('The prompt is missed'),
-        models: yup.array().min(1, 'The models are wrong'),
+        prompt: yup.string().required('The prompt is missed'),
+        //models: yup.array().min(1, 'The models are wrong'),
         condition: yup.string().required('The condition is wrong'),
         iterations: yup.number().min(1, 'The min iteration counter should be 1'),
         term: yup.string().required('The term field is required.'),
@@ -35,7 +35,7 @@ export const ManageTaskForm = ({ id }) => {
             <div>
                 <Formik
                   validationSchema={schema}
-                  onSubmit={values => onFormSubmit(values)}
+                  onSubmit={(values, actions) => onFormSubmit(values, actions)}
                   initialValues={taskData}
                 >
                     {({ handleSubmit, handleChange, handleBlur, values, touched, errors }) => (
