@@ -5,8 +5,7 @@ import Button from 'react-bootstrap/Button';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import { Textarea } from '_components/textarea/texarea';
 import { useManageTaskForm } from './use-manage-task-form';
-import { TaskResultList } from '_components/task-result-list/task-result-list';
-import React from "react";
+import { TaskStatisticList } from '_components/task-statistic-list/task-statistic-list';
 
 export const ManageTaskForm = ({ id }) => {
     const { Formik } = formik;
@@ -17,13 +16,14 @@ export const ManageTaskForm = ({ id }) => {
         progressVisible,
         progress,
         acceptanceCriteria,
-        resultsResponse,
+        taskStatistic,
+        isTaskStatisticLoading,
         onFormSubmit,
     } = useManageTaskForm(id);
 
     const schema = yup.object().shape({
         prompt: yup.string().required('The prompt is missed'),
-        //models: yup.array().min(1, 'The models are wrong'),
+        models: yup.array().min(1, 'The models are wrong'),
         condition: yup.string().required('The condition is wrong'),
         iterations: yup.number().min(1, 'The min iteration counter should be 1'),
         term: yup.string().required('The term field is required.'),
@@ -135,6 +135,7 @@ export const ManageTaskForm = ({ id }) => {
                                     value={values.term}
                                     isErrors={touched.term && !!errors.term}
                                     errorText={touched.term && errors.term}
+                                    rows="6"
                                     onTextareaChange={handleChange}
                                     onBlur={handleBlur}
                                   />
@@ -153,9 +154,7 @@ export const ManageTaskForm = ({ id }) => {
                       striped
                     />
                )}
-                {/*{*/}
-                {/*    resultsResponse && (<TaskResultList results={resultsResponse} />)*/}
-                {/*}*/}
+                { isTaskStatisticLoading ? 'Loading' : <TaskStatisticList statistic={taskStatistic} /> }
             </div>
           )}
       </>

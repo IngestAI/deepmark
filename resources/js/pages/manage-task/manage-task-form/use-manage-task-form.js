@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { getTasksModels, getTask, getAcceptanceCriteria, createTask, getTaskStatus, getTaskResponses } from '_api/api';
+import { getTasksModels, getTask, getAcceptanceCriteria, createTask, getTaskStatus, getTaskStatistic } from '_api/api';
 import { taskModel } from '_models/models';
 
 export const useManageTaskForm = id => {
@@ -9,8 +9,8 @@ export const useManageTaskForm = id => {
   const [acceptanceCriteria, setAcceptanceCriteria] = useState([]);
   const [progress, setProgress] = useState(0);
   const [progressVisible, setProgressVisible] = useState(false);
-  const [resultsResponse, setResultsResponse] = useState(null);
-  const [isResultsResponseLoading, setIsResultsResponseLoading] = useState(true);
+  const [taskStatistic, setTaskStatistic] = useState([]);
+  const [isTaskStatisticLoading, setIsTaskStatisticLoading] = useState(false);
 
   const intervalRef = useRef(null);
 
@@ -39,22 +39,23 @@ export const useManageTaskForm = id => {
 
   const fetchAcceptanceCriteria = () => {
     getAcceptanceCriteria().then(criteria => {
-      const {data} = criteria;
-      setAcceptanceCriteria(data);
+      setAcceptanceCriteria(criteria.data);
     })
   }
 
-  const fetchResults = id => {
-    getTaskResponses(id).then(results => {
+  const fetchTaskStatistic = id => {
+    setIsTaskStatisticLoading(true);
+    getTaskStatistic(id).then(results => {
       const {data} = results;
-      setResultsResponse(data);
+      setIsTaskStatisticLoading(false);
+      setTaskStatistic(data.statistics);
     })
   }
 
   const stopCheckingTaskProgress = id => {
     clearInterval(intervalRef.current);
     setProgressVisible(false);
-    fetchResults(id);
+    fetchTaskStatistic(id);
   }
 
   const checkTaskProgress = id => {
@@ -112,7 +113,8 @@ export const useManageTaskForm = id => {
     progressVisible,
     progress,
     acceptanceCriteria,
-    resultsResponse,
+    taskStatistic,
+    isTaskStatisticLoading,
     onFormSubmit,
   }
 }

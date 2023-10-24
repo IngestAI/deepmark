@@ -36,10 +36,10 @@ export const getTaskStatus = id => {
   }).then(res => res.data);
 }
 
-export const getTaskResponses = id => {
+export const getTaskStatistic = id => {
   return instance.get(`/api/tasks/${id}`, {
     params: {
-      'scope': 'responses',
+      'scope': 'statistics',
     }
   }).then(res => res.data);
 }
