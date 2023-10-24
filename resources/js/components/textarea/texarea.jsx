@@ -1,7 +1,7 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
 
-export const Textarea = ({ id, name, labelText, value = '', rows = 3, onTextareaChange, placeholder, errors, className }) => {
+export const Textarea = ({ id, name, labelText, value = '', rows = 3, onTextareaChange, onBlur, placeholder, isErrors, errorText, className }) => {
     return (
         <Form.Group controlId={id} className={className}>
             {labelText && <Form.Label>{labelText}</Form.Label>}
@@ -12,10 +12,11 @@ export const Textarea = ({ id, name, labelText, value = '', rows = 3, onTextarea
                 rows={rows}
                 placeholder={placeholder}
                 onChange={onTextareaChange}
-                isInvalid={!!errors}
+                isInvalid={isErrors}
+                onBlur={onBlur}
             />
             <Form.Control.Feedback type="invalid">
-                {errors}
+                {errorText}
             </Form.Control.Feedback>
         </Form.Group>
     )

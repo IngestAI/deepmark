@@ -5,6 +5,8 @@ import Button from 'react-bootstrap/Button';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import { Textarea } from '_components/textarea/texarea';
 import { useManageTaskForm } from './use-manage-task-form';
+import { TaskResultList } from '_components/task-result-list/task-result-list';
+import React from "react";
 
 export const ManageTaskForm = ({ id }) => {
     const { Formik } = formik;
@@ -19,10 +21,12 @@ export const ManageTaskForm = ({ id }) => {
         onFormSubmit,
     } = useManageTaskForm(id);
 
-    console.log(resultsResponse)
-
     const schema = yup.object().shape({
-        prompt: yup.string().required('Required')
+        //prompt: yup.string().required('The prompt is missed'),
+        models: yup.array().min(1, 'The models are wrong'),
+        condition: yup.string().required('The condition is wrong'),
+        iterations: yup.number().min(1, 'The min iteration counter should be 1'),
+        term: yup.string().required('The term field is required.'),
     });
 
     return (
@@ -34,7 +38,7 @@ export const ManageTaskForm = ({ id }) => {
                   onSubmit={values => onFormSubmit(values)}
                   initialValues={taskData}
                 >
-                    {({ handleSubmit, handleChange, values, touched, errors }) => (
+                    {({ handleSubmit, handleChange, handleBlur, values, touched, errors }) => (
                       <Form noValidate onSubmit={handleSubmit}>
                           <div className="row mb-2">
                               <Textarea
@@ -42,10 +46,12 @@ export const ManageTaskForm = ({ id }) => {
                                 labelText="Input"
                                 placeholder="Your query or any phrase"
                                 value={values.prompt}
-                                errors={errors.prompt}
+                                isErrors={touched.prompt && !!errors.prompt}
+                                errorText={touched.prompt && errors.prompt}
                                 rows="6"
                                 className="col-md-12"
                                 onTextareaChange={handleChange}
+                                onBlur={handleBlur}
                               />
                           </div>
                           <div className="row mb-3">
@@ -74,6 +80,9 @@ export const ManageTaskForm = ({ id }) => {
                                         </Form.Check>
                                     </div>
                                   ))}
+                                  {touched.models && !!errors.models && (
+                                    <div>{errors.models}</div>
+                                  )}
                               </div>
                           </div>
                           <div className="row mb-3">
@@ -84,11 +93,24 @@ export const ManageTaskForm = ({ id }) => {
                                     value={values.iterations}
                                     min="1"
                                     onChange={handleChange}
+                                    isInvalid={touched.iterations && !!errors.iterations}
                                   />
+                                  {
+                                    touched.iterations && !!errors.iterations && (
+                                      <Form.Control.Feedback type="invalid">
+                                          {errors.iterations}
+                                      </Form.Control.Feedback>
+                                    )
+                                  }
                               </div>
                               <div className="col-md-6">
                                 { acceptanceCriteria.length > 0 && (
-                                  <Form.Select value={values.condition} onChange={handleChange} name="condition">
+                                  <Form.Select
+                                    value={values.condition}
+                                    onChange={handleChange}
+                                    name="condition"
+                                    isInvalid={touched.condition && !!errors.condition}
+                                  >
                                     {acceptanceCriteria.map(criteria => (
                                       <option value={criteria.value} key={criteria.value}>
                                         {criteria.title}
@@ -96,6 +118,13 @@ export const ManageTaskForm = ({ id }) => {
                                     ))}
                                   </Form.Select>
                                 )}
+                                  {
+                                    touched.condition && !!errors.condition && (
+                                      <Form.Control.Feedback type="invalid">
+                                          {errors.condition}
+                                      </Form.Control.Feedback>
+                                    )
+                                  }
                               </div>
                           </div>
                           <div className="row mb-3">
@@ -104,8 +133,10 @@ export const ManageTaskForm = ({ id }) => {
                                     name="term"
                                     placeholder={values.condition === 'vectorSimilarity' ? 'Vector' : 'Phrase'}
                                     value={values.term}
-                                    errors={errors.term}
+                                    isErrors={touched.term && !!errors.term}
+                                    errorText={touched.term && errors.term}
                                     onTextareaChange={handleChange}
+                                    onBlur={handleBlur}
                                   />
                               </div>
                           </div>
@@ -122,6 +153,9 @@ export const ManageTaskForm = ({ id }) => {
                       striped
                     />
                )}
+                {/*{*/}
+                {/*    resultsResponse && (<TaskResultList results={resultsResponse} />)*/}
+                {/*}*/}
             </div>
           )}
       </>

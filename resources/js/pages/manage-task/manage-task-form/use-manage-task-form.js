@@ -9,7 +9,8 @@ export const useManageTaskForm = id => {
   const [acceptanceCriteria, setAcceptanceCriteria] = useState([]);
   const [progress, setProgress] = useState(0);
   const [progressVisible, setProgressVisible] = useState(false);
-  const [resultsResponse, setResultsResponse] = useState([]);
+  const [resultsResponse, setResultsResponse] = useState(null);
+  const [isResultsResponseLoading, setIsResultsResponseLoading] = useState(true);
 
   const intervalRef = useRef(null);
 
@@ -46,7 +47,7 @@ export const useManageTaskForm = id => {
   const fetchResults = id => {
     getTaskResponses(id).then(results => {
       const {data} = results;
-      setResultsResponse(data.responses);
+      setResultsResponse(data);
     })
   }
 
@@ -68,11 +69,15 @@ export const useManageTaskForm = id => {
 
   const onFormSubmit = values => {
     if (!id) {
-      createTask(values).then(res => {
-        const {uuid} = res;
-        setProgressVisible(true);
-        checkTaskProgress(uuid);
-      })
+        createTask(values).then(res => {
+          const {errors} = res;
+          console.log(errors)
+          if (!errors) {
+            const {uuid} = res;
+            setProgressVisible(true);
+            checkTaskProgress(uuid);
+          }
+        })
     } else {
       console.log('edit task')
     }
