@@ -9,16 +9,16 @@ use App\Enums\TaskStatusEnum;
 use App\Models\AIModel;
 use App\Models\AIProvider;
 use App\Models\PromptRequest;
+use App\Models\Task;
+use App\Models\TaskModel;
 use App\Services\Ai\AiFactory;
 use App\Services\Ai\Conditions\ConditionStrategyContext;
-use App\Services\Ai\Data\TextEmbeddingAda003AiModelRequest;
-use App\Services\Ai\Enums\AiProviderEnum;
-use App\Services\Ai\Enums\AiVectorModelEnum;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Spatie\LaravelData\Data;
 use Throwable;
@@ -79,6 +79,12 @@ class PromptRequestJob implements ShouldQueue
                 }
                 $promptRequest->data = $data;
                 $promptRequest->status = (string) PromptRequestStatusEnum::success();
+
+                if ($condition === (string) PromptRequestConditionEnum::vectorSimilarity()) {
+                    $this->calculateMinMaxScore($task);
+                } else {
+                    $this->calculateScore($task);
+                }
             } else {
                 $promptRequest->status = (string) PromptRequestStatusEnum::failed();
                 Log::channel('tasks')->debug('Model: ' . $model->fullname);
@@ -96,15 +102,59 @@ class PromptRequestJob implements ShouldQueue
                 ])->save();
             }
         } catch (Throwable $e) {
-            $task->fill([
-                'progress' => $progress,
-                'status' => (string) TaskStatusEnum::failed()
-            ])->save();
-
+            Log::channel('tasks')->error('Error: ' . $e->getMessage());
             $promptRequest->fill([
                 'status' => (string) PromptRequestStatusEnum::failed(),
                 'data' => ['error' => $e->getMessage()]
             ])->save();
+            $task->fill([
+                'progress' => $progress,
+                'status' => (string) TaskStatusEnum::failed()
+            ])->save();
         }
+    }
+
+    private function calculateScore(Task $task)
+    {
+        $results = [];
+        $task->promptRequests()->each(function($promptRequest) use (&$results) {
+            $results[$promptRequest->model_id][] = $promptRequest->data['match'] ?? false;
+        });
+
+        $data = [];
+        foreach ($results as $modelId => $matches) {
+            $trueModels = array_map(fn($item) => $item === true, $matches);
+            $data[] = [
+                'task_id' => $task->id,
+                'model_id' => $modelId,
+                'match' => json_encode(['score' => count($trueModels) / count($matches) * 100]),
+            ];
+        }
+        TaskModel::upsert($data, ['task_id', 'model_id']);
+    }
+
+    private function calculateMinMaxScore(Task $task)
+    {
+        $results = [];
+        $task->promptRequests()->each(function($promptRequest) use (&$results) {
+            $results[$promptRequest->model_id][] = $promptRequest->data['similarity'] ?? 0;
+        });
+
+        $data = [];
+        foreach ($results as $modelId => $similarities) {
+            $min = min($similarities);
+            $max = max($similarities);
+            $data[] = [
+                'task_id' => $task->id,
+                'model_id' => $modelId,
+                'match' => json_encode([
+                    'min' => $min,
+                    'max' => $max,
+                    'average' => ($min + $max) / 2,
+                ]),
+            ];
+        }
+
+        TaskModel::upsert($data, ['task_id', 'model_id']);
     }
 }
