@@ -53,7 +53,7 @@ class TasksResource extends JsonResource
         if (in_array('iterations', $request->scope)) {
             $data['iterations'] = $this->data['iterations'] ?? 1;
         }
-        if (in_array('statistics', $request->models)) {
+        if (in_array('statistics', $request->scope)) {
             $data['statistics'] = ModelTaskResource::make($this->taskModels);
         }
         return $data;
