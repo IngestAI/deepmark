@@ -5,7 +5,7 @@ import { ManageTask } from './pages/manage-task/manage-task';
 
 export const App = () => {
     return (
-        <div>
+        <>
             <Routes>
                 <Route path='/' element={<Layout />}>
                     <Route index element={<Tasks />} />
@@ -13,6 +13,6 @@ export const App = () => {
                     <Route path='/task/add' element={<ManageTask />} />
                 </Route>
             </Routes>
-        </div>
+        </>
     )
 }
