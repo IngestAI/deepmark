@@ -1,10 +1,5 @@
-#progressbar {
-  margin-top: 20px;
-}
-
-.progress-label {
-  font-weight: bold;
-  text-shadow: 1px 1px 0 #fff;
+.progress-bar {
+  min-width: 20px;
 }
 
 .ui-dialog-titlebar-close {
@@ -29,4 +24,9 @@
 /* Need remove in after login/logout will be implemented */
 .dropdown-toggle::after {
   display: none;
+}
+
+.sidebar-trigger {
+  background: none;
+  border: none;
 }

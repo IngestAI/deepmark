@@ -3,6 +3,7 @@ import * as yup from 'yup';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import ProgressBar from 'react-bootstrap/ProgressBar';
+import { Loader } from '_components/loader/loader';
 import { Textarea } from '_components/textarea/texarea';
 import { useManageTaskForm } from './use-manage-task-form';
 import { TaskStatisticList } from '_components/task-statistic-list/task-statistic-list';
@@ -31,14 +32,25 @@ export const ManageTaskForm = ({ id }) => {
 
     return (
       <>
-          {isLoading ? 'Loading' : (
+          {isLoading
+            ? <Loader />
+            : (
             <div>
                 <Formik
                   validationSchema={schema}
                   onSubmit={(values, actions) => onFormSubmit(values, actions)}
                   initialValues={taskData}
                 >
-                    {({ handleSubmit, handleChange, handleBlur, values, touched, errors }) => (
+                    {({
+                      handleSubmit,
+                      handleChange,
+                      handleBlur,
+                      values,
+                      touched,
+                      errors,
+                      isSubmitting,
+                      resetForm,
+                    }) => (
                       <Form noValidate onSubmit={handleSubmit}>
                           <div className="row mb-2">
                               <Textarea
@@ -141,7 +153,18 @@ export const ManageTaskForm = ({ id }) => {
                                   />
                               </div>
                           </div>
-                          <Button type="submit">Submit form</Button>
+                          <div className="row">
+                              <div className="d-flex flex-row">
+                                  <Button variant="secondary" type="submit" disabled={isSubmitting}>
+                                      <span className="material-symbols-rounded align-middle me-2">electric_bolt</span> Run
+                                  </Button>
+                                  <div className="ms-2">
+                                      <Button variant="light" onClick={resetForm} disabled={isSubmitting}>
+                                          <span className="align-middle"></span> Clear
+                                      </Button>
+                                  </div>
+                              </div>
+                          </div>
                       </Form>
                     )}
                 </Formik>
