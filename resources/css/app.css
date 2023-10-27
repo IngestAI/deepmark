@@ -30,3 +30,30 @@
   background: none;
   border: none;
 }
+
+.accordion {
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.task-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.task-list-item-text {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+}
+
+.delete-button:hover {
+  opacity: 0.5;
+}
+

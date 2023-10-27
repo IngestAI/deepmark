@@ -1,7 +1,18 @@
-import React from 'react';
 import Form from 'react-bootstrap/Form';
 
-export const Textarea = ({ id, name, labelText, value = '', rows = 3, onTextareaChange, onBlur, placeholder, isErrors, errorText, className }) => {
+export const Textarea = ({
+   id,
+   name,
+   labelText,
+   value = '',
+   rows = 3,
+   onTextareaChange,
+   onBlur,
+   placeholder = '',
+   isErrors,
+   errorText,
+   className
+}) => {
     return (
         <Form.Group controlId={id} className={className}>
             {labelText && <Form.Label>{labelText}</Form.Label>}

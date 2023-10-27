@@ -1,3 +1,5 @@
+import * as yup from 'yup';
+import * as formik from 'formik';
 import { useEffect, useState, useRef } from 'react';
 import { getTasksModels, getTask, getAcceptanceCriteria, createTask, getTaskStatus, getTaskStatistic } from '_api/api';
 import { taskModel } from '_models/models';
@@ -13,6 +15,16 @@ export const useManageTaskForm = id => {
   const [isTaskStatisticLoading, setIsTaskStatisticLoading] = useState(false);
 
   const intervalRef = useRef(null);
+
+  const schema = yup.object().shape({
+    prompt: yup.string().required('The prompt is missed'),
+    models: yup.array().min(1, 'The models are wrong'),
+    condition: yup.string().required('The condition is wrong'),
+    iterations: yup.number().min(1, 'The min iteration counter should be 1'),
+    term: yup.string().required('The term field is required.'),
+  });
+
+  const { Formik } = formik;
 
   useEffect(() => {
     return () => {
@@ -49,6 +61,7 @@ export const useManageTaskForm = id => {
       const {data} = results;
       setIsTaskStatisticLoading(false);
       setTaskStatistic(data.statistics);
+
     })
   }
 
@@ -107,6 +120,8 @@ export const useManageTaskForm = id => {
   }, []);
 
   return {
+    schema,
+    Formik,
     isLoading,
     tasksModels,
     taskData,

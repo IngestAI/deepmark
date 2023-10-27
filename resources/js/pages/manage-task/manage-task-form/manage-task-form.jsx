@@ -1,5 +1,3 @@
-import * as formik from 'formik';
-import * as yup from 'yup';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import ProgressBar from 'react-bootstrap/ProgressBar';
@@ -7,10 +5,13 @@ import { Loader } from '_components/loader/loader';
 import { Textarea } from '_components/textarea/texarea';
 import { useManageTaskForm } from './use-manage-task-form';
 import { TaskStatisticList } from '_components/task-statistic-list/task-statistic-list';
+import { InputNumber } from '_components/input-number/input-number';
+import { Select } from '_components/select/select';
 
 export const ManageTaskForm = ({ id }) => {
-    const { Formik } = formik;
     const {
+        schema,
+        Formik,
         isLoading,
         tasksModels,
         taskData,
@@ -21,14 +22,6 @@ export const ManageTaskForm = ({ id }) => {
         isTaskStatisticLoading,
         onFormSubmit,
     } = useManageTaskForm(id);
-
-    const schema = yup.object().shape({
-        prompt: yup.string().required('The prompt is missed'),
-        models: yup.array().min(1, 'The models are wrong'),
-        condition: yup.string().required('The condition is wrong'),
-        iterations: yup.number().min(1, 'The min iteration counter should be 1'),
-        term: yup.string().required('The term field is required.'),
-    });
 
     return (
       <>
@@ -99,44 +92,29 @@ export const ManageTaskForm = ({ id }) => {
                           </div>
                           <div className="row mb-3">
                               <div className="col-md-6">
-                                  <Form.Control
-                                    type="number"
+                                  <InputNumber
+                                    id="iterations"
                                     name="iterations"
                                     value={values.iterations}
+                                    labelText="Number of iterations"
                                     min="1"
-                                    onChange={handleChange}
-                                    isInvalid={touched.iterations && !!errors.iterations}
+                                    onInputChange={handleChange}
+                                    onBlur={handleBlur}
+                                    isErrors={touched.iterations && !!errors.iterations}
+                                    errorText={errors.iterations}
                                   />
-                                  {
-                                    touched.iterations && !!errors.iterations && (
-                                      <Form.Control.Feedback type="invalid">
-                                          {errors.iterations}
-                                      </Form.Control.Feedback>
-                                    )
-                                  }
                               </div>
                               <div className="col-md-6">
-                                { acceptanceCriteria.length > 0 && (
-                                  <Form.Select
-                                    value={values.condition}
-                                    onChange={handleChange}
-                                    name="condition"
-                                    isInvalid={touched.condition && !!errors.condition}
-                                  >
-                                    {acceptanceCriteria.map(criteria => (
-                                      <option value={criteria.value} key={criteria.value}>
-                                        {criteria.title}
-                                      </option>
-                                    ))}
-                                  </Form.Select>
-                                )}
-                                  {
-                                    touched.condition && !!errors.condition && (
-                                      <Form.Control.Feedback type="invalid">
-                                          {errors.condition}
-                                      </Form.Control.Feedback>
-                                    )
-                                  }
+                                <Select
+                                  id="condition"
+                                  options={acceptanceCriteria}
+                                  labelText="Acceptance Criteria"
+                                  value={values.condition}
+                                  onSelectChange={handleChange}
+                                  onBlur={handleBlur}
+                                  isErrors={touched.condition && !!errors.condition}
+                                  errorText={errors.condition}
+                                />
                               </div>
                           </div>
                           <div className="row mb-3">
@@ -159,7 +137,11 @@ export const ManageTaskForm = ({ id }) => {
                                       <span className="material-symbols-rounded align-middle me-2">electric_bolt</span> Run
                                   </Button>
                                   <div className="ms-2">
-                                      <Button variant="light" onClick={resetForm} disabled={isSubmitting}>
+                                      <Button
+                                        variant="light"
+                                        onClick={resetForm}
+                                        disabled={isSubmitting}
+                                      >
                                           <span className="align-middle"></span> Clear
                                       </Button>
                                   </div>
@@ -177,7 +159,7 @@ export const ManageTaskForm = ({ id }) => {
                       striped
                     />
                )}
-                { isTaskStatisticLoading ? 'Loading' : <TaskStatisticList statistic={taskStatistic} /> }
+                { isTaskStatisticLoading ? <Loader /> : <TaskStatisticList statistic={taskStatistic} /> }
             </div>
           )}
       </>

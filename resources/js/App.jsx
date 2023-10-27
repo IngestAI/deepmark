@@ -9,7 +9,7 @@ export const App = () => {
             <Routes>
                 <Route path='/' element={<Layout />}>
                     <Route index element={<Tasks />} />
-                    <Route path='/task/edit/:id' element={<ManageTask />} />
+                    {/*<Route path='/task/edit/:id' element={<ManageTask />} />*/}
                     <Route path='/task/add' element={<ManageTask />} />
                 </Route>
             </Routes>
