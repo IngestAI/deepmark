@@ -67,7 +67,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | When using the "database" or "redis" session drivers, you may specify a
-    | connection that should be used to manage these sessions. This should
+    | connection that should be used to manage-task these sessions. This should
     | correspond to a connection in your database configuration options.
     |
     */
@@ -80,7 +80,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | When using the "database" session driver, you may specify the table we
-    | should use to manage the sessions. Of course, a sensible default is
+    | should use to manage-task the sessions. Of course, a sensible default is
     | provided for you; however, you are free to change this as needed.
     |
     */

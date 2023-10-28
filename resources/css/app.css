@@ -1,0 +1,59 @@
+.progress-bar {
+  min-width: 20px;
+}
+
+.ui-dialog-titlebar-close {
+  display: none;
+}
+
+.history-disable {
+  background-color: #ececec;
+  color: #b9b9b9;
+}
+
+.magnific-contact-form .mfp-content {
+  width: calc(100vw - 30px);
+  max-width: 800px;
+  height: 600px;
+}
+.aside-logo a,
+.sidebar-title {
+  color: var(--sidebar-brand-color);
+}
+
+/* Need remove in after login/logout will be implemented */
+.dropdown-toggle::after {
+  display: none;
+}
+
+.sidebar-trigger {
+  background: none;
+  border: none;
+}
+
+.accordion {
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.task-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.task-list-item-text {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+}
+
+.delete-button:hover {
+  opacity: 0.5;
+}
+
