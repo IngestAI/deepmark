@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  headers: {'X-Bearer-Token': 'UKcqp8m816sLhzEfUo0lXOgo5uwiHtrZ'}
+  headers: {'X-Bearer-Token': `${__BEARER_TOKEN__}`}
 });
 
 export const getTasks = () => {

@@ -1,8 +1,13 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import react from '@vitejs/plugin-react';
+import dotenv from 'dotenv'
 
+dotenv.config()
 export default defineConfig({
+    define: {
+      __BEARER_TOKEN__: `"${process.env.BEARER_TOKEN}"` // wrapping in "" since it's a string
+    },
     plugins: [
         laravel({
             input: [
