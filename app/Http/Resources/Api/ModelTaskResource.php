@@ -18,9 +18,10 @@ class ModelTaskResource extends ResourceCollection
         return $this->collection->map(
             fn($taskModel) => [
                 'model' => $taskModel->model->fullname,
-                'query' => $taskModel->task->promptRequests->pluck('prompt')->first(),
-                'answers' => $taskModel->task->promptRequests->map(fn($promptRequest) => $promptRequest->data['answer'] ?? ''),
-                'result' => $taskModel->match,
+                'latency' => $taskModel->latency,
+                'errorRate' => $taskModel->error_rate,
+                'assessment' => $taskModel->assessment,
+                'downloadUrl' => $taskModel->download_url,
             ],
         )->all();
     }
