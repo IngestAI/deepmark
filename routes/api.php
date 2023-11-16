@@ -15,10 +15,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::group(['prefix' => 'tasks'], function () {
+    Route::group(['prefix' => '{task:uuid}'], function () {
+        Route::get('/download/{model}', [TaskController::class, 'downloadModel'])->name('downloadModel');
+        Route::get('/download', [TaskController::class, 'downloadTask'])->name('downloadTask');
+    });
+});
+
 Route::group(['middleware' => 'api.bearerToken'], function () {
     Route::group(['prefix' => 'tasks'], function () {
-        Route::get('/{task:uuid}', [TaskController::class, 'show']);
-        Route::delete('/{task:uuid}', [TaskController::class, 'destroy']);
+        Route::group(['prefix' => '{task:uuid}'], function () {
+            Route::get('/', [TaskController::class, 'show']);
+            Route::delete('/', [TaskController::class, 'destroy']);
+        });
         Route::post('/', [TaskController::class, 'store']);
         Route::get('/', [TaskController::class, 'index']);
     });

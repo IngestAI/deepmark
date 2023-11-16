@@ -4,15 +4,15 @@ namespace App\Models;
 
 use App\Enums\TaskStatusEnum;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class Task extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $casts = [
         'data' => 'json'
@@ -45,6 +45,10 @@ class Task extends Model
             $task->status = TaskStatusEnum::waiting()->value;
         });
 
+        static::addGlobalScope('order', function (Builder $builder) {
+            $builder->orderBy('id', 'desc');
+        });
+
         static::deleted(function ($task) {
             $task->promptRequests()->delete();
             $task->taskModels()->delete();
@@ -58,6 +62,15 @@ class Task extends Model
                 TaskStatusEnum::success(),
                 TaskStatusEnum::failed(),
             ]
+        );
+    }
+
+    public function downloadUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => route('downloadTask', [
+                'task' => $this->uuid,
+            ]),
         );
     }
 }

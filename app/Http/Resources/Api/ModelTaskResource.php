@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Api;
 
+use App\Models\PromptRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
@@ -17,10 +18,14 @@ class ModelTaskResource extends ResourceCollection
     {
         return $this->collection->map(
             fn($taskModel) => [
+                'id' => $taskModel->id,
                 'model' => $taskModel->model->fullname,
-                'query' => $taskModel->task->promptRequests->pluck('prompt')->first(),
-                'answers' => $taskModel->task->promptRequests->map(fn($promptRequest) => $promptRequest->data['answer'] ?? ''),
-                'result' => $taskModel->match,
+                'latency' => $taskModel->latency,
+                'errorRate' => $taskModel->error_rate,
+                'assessment' => $taskModel->assessment,
+                'downloadUrl' => $taskModel->download_url,
+                'answers' => PromptRequest::task($taskModel->task_id)->model($taskModel->model_id)->get()
+                    ->map(fn($promptRequest) => $promptRequest->data['answer'] ?? ''),
             ],
         )->all();
     }

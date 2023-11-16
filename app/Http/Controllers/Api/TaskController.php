@@ -6,8 +6,11 @@ use App\Data\PromptRequestJobData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\TaskShowRequest;
 use App\Http\Requests\Api\TaskStoreRequest;
+use App\Http\Resources\Api\TaskResource;
 use App\Http\Resources\Api\TasksResource;
 use App\Jobs\PromptRequestJob;
+use App\Models\AIModel;
+use App\Models\PromptRequest;
 use App\Models\Task;
 use Illuminate\Http\Request;
 
@@ -20,9 +23,7 @@ class TaskController extends Controller
     {
         return response()->json([
             'data' => TasksResource::collection(
-                Task::finished()
-                    ->orderBy('id', 'desc')
-                    ->get()
+                Task::all()
             )->toArray($request)
         ]);
     }
@@ -69,7 +70,7 @@ class TaskController extends Controller
      */
     public function show(Task $task, TaskShowRequest $request)
     {
-        $data = TasksResource::make($task)->toArray($request);
+        $data = TaskResource::make($task)->toArray($request);
         return response()->json(['data' => $data]);
     }
 
@@ -88,5 +89,51 @@ class TaskController extends Controller
     {
         $task->delete();
         response()->json([]);
+    }
+
+    public function downloadTask(Task $task)
+    {
+        $content = implode(';', ['AI Model', 'Avg. Latency', 'Error Rate', 'Assessment']);
+        foreach ($task->promptRequests as $promptRequest) {
+            $content .= "\n" . implode(';', [
+                $promptRequest->model->fullname,
+                $promptRequest->latency,
+                $promptRequest->error_rate,
+                $promptRequest->assessment
+            ]);
+        }
+
+        $headers = [
+            'Content-type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="task.csv"',
+            'Content-Length' => strlen($content)
+        ];
+
+        return response()->make($content, 200, $headers);
+    }
+
+    public function downloadModel(Task $task, string $model)
+    {
+        $model = AIModel::slug($model)->firstOrFail();
+
+        $promptRequests = PromptRequest::where('task_id', $task->id)->where('model_id', $model->id)->get();
+        $content = implode(';', ['AI Model', 'Avg. Latency', 'Error Rate', 'Assessment']);
+
+        foreach ($promptRequests as $promptRequest) {
+            $content .= "\n" . implode(';', [
+                    $promptRequest->model->fullname,
+                    $promptRequest->latency,
+                    $promptRequest->error_rate,
+                    $promptRequest->assessment
+                ]);
+        }
+
+        $headers = [
+            'Content-type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="model.csv"',
+            'Content-Length' => strlen($content)
+        ];
+
+        return response()->make($content, 200, $headers);
     }
 }

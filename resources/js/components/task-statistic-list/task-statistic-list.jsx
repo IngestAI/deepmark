@@ -16,7 +16,7 @@ export const TaskStatisticList = ({ statistic }) => {
             { statistic.answers.length >0 && (
               statistic.answers.map((item, index) => <p key={`${index}item`}>{item}</p>)
             )}
-            <h5 className="mb-0">Score: { statistic?.result?.score }</h5>
+            <h5 className="mb-0">Score: { statistic?.assessment }</h5>
           </Accordion.Body>
         </Accordion.Item>
       ))}
