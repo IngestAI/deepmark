@@ -75,6 +75,21 @@ class PromptRequest extends Model
         );
     }
 
+    public function errorRateCoefficient(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => !empty($this->error_rate) ? 1 : 0,
+        );
+    }
+
+    public function assessmentCoefficient(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => !empty($this->assessment) ? 1 : 0,
+        );
+    }
+
+
     public function answer(): Attribute
     {
         return Attribute::make(
