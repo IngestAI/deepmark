@@ -16,7 +16,7 @@ export const TasksList = ({ tasks }) => {
     return (
       <>
           {tasks.map((task, index) => (
-            <div className={cn('card overflow-hidden', {'mb-4': index === 0})} key={task.uuid}>
+            <div className={cn('card overflow-hidden', {'mt-4': index !== 0})} key={task.uuid}>
                 <div className="card-header d-flex align-items-center">
                     <h5 className="mb-0">{`Task #${index + 1}`}</h5>
                     <div className="flex-shrink-0 ms-auto">
