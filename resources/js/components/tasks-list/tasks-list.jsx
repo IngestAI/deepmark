@@ -20,7 +20,7 @@ export const TasksList = ({ tasks }) => {
                 <div className="card-header d-flex align-items-center">
                     <h5 className="mb-0">{`Task #${index + 1}`}</h5>
                     <div className="flex-shrink-0 ms-auto">
-                        <a href="#" download>Download All</a>
+                        <a href={task.downloadAll} download>Download All</a>
                     </div>
                 </div>
                 <div className="card-body">
@@ -43,16 +43,17 @@ export const TasksList = ({ tasks }) => {
                               </tr>
                           </thead>
                           <tbody>
-                              <tr>
-                                  <td>Anthropic Claud-2</td>
-                                  <td>250 ms</td>
+                          {task.statistics.map((statistic, statisticIndex) => (
+                              <tr key={statistic.id}>
+                                  <td>{statistic.model}</td>
+                                  <td>{statistic.latency} ms</td>
                                   <td>
                                       <div className="small-progressbar">
                                           <ProgressBar
                                             striped
-                                            variant={10 < 20 ? 'info' : 'danger'}
+                                            variant={statistic.errorRate < 20 ? 'info' : 'danger'}
                                             animated
-                                            now={10}
+                                            now={statistic.errorRate}
                                             className="height-5"
                                           />
                                       </div>
@@ -61,52 +62,22 @@ export const TasksList = ({ tasks }) => {
                                       <div className="small-progressbar">
                                           <ProgressBar
                                             striped
-                                            variant={assessmentProgressColor(29)}
+                                            variant={assessmentProgressColor(statistic.assessment)}
                                             animated
-                                            now={29}
+                                            now={statistic.assessment}
                                             className="height-5"
                                           />
                                       </div>
                                   </td>
                                   <td>
                                       <div className="d-flex justify-content-end align-items-center">
-                                          <a href="#!" download>
+                                          <a href={statistic.downloadUrl} download>
                                               <span className="material-symbols-rounded align-middle fs-5 text-body">download</span>
                                           </a>
                                       </div>
                                   </td>
                               </tr>
-                              <tr>
-                                  <td>Anthropic Claud-2</td>
-                                  <td>250 ms</td>
-                                  <td>
-                                      <div className="small-progressbar">
-                                          <ProgressBar
-                                            striped
-                                            variant={50 < 20 ? 'info' : 'danger'}
-                                            animated
-                                            now={50}
-                                            className="height-5"
-                                          />
-                                      </div>
-                                  </td>
-                                  <td>
-                                      <ProgressBar
-                                        striped
-                                        variant={assessmentProgressColor(81)}
-                                        animated
-                                        now={81}
-                                        className="height-5"
-                                      />
-                                  </td>
-                                  <td>
-                                      <div className="d-flex justify-content-end align-items-center">
-                                          <a href="#!" download>
-                                              <span className="material-symbols-rounded align-middle fs-5 text-body">download</span>
-                                          </a>
-                                      </div>
-                                  </td>
-                              </tr>
+                          ))}
                           </tbody>
                       </Table>
                     }

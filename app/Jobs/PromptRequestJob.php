@@ -63,8 +63,8 @@ class PromptRequestJob implements ShouldQueue
             'status' => (string) PromptRequestStatusEnum::waiting(),
         ]);
 
+        $startTime = Carbon::now();
         try {
-            $startTime = Carbon::now();
             $response = AiFactory::provider($provider['slug'])
                 ->model($model)
                 ->send($request->model);
@@ -99,10 +99,11 @@ class PromptRequestJob implements ShouldQueue
                 ])->save();
             }
         } catch (Throwable $e) {
+            $latency = Carbon::now()->diffInMilliseconds($startTime);
             Log::channel('tasks')->error('Error: ' . $e->getMessage());
             $promptRequest->fill([
                 'status' => (string) PromptRequestStatusEnum::failed(),
-                'data' => ['error' => $e->getMessage()]
+                'data' => ['error' => $e->getMessage(), 'latency' => $latency]
             ])->save();
             $task->fill([
                 'progress' => $progress,

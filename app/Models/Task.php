@@ -45,6 +45,10 @@ class Task extends Model
             $task->status = TaskStatusEnum::waiting()->value;
         });
 
+        static::addGlobalScope('order', function (Builder $builder) {
+            $builder->orderBy('id', 'desc');
+        });
+
         static::deleted(function ($task) {
             $task->promptRequests()->delete();
             $task->taskModels()->delete();

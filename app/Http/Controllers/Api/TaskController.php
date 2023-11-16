@@ -12,7 +12,6 @@ use App\Jobs\PromptRequestJob;
 use App\Models\AIModel;
 use App\Models\PromptRequest;
 use App\Models\Task;
-use App\Models\TaskModel;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -24,9 +23,7 @@ class TaskController extends Controller
     {
         return response()->json([
             'data' => TasksResource::collection(
-                Task::finished()
-                    ->orderBy('id', 'desc')
-                    ->get()
+                Task::all()
             )->toArray($request)
         ]);
     }

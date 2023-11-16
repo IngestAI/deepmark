@@ -17,6 +17,7 @@ class ModelTaskResource extends ResourceCollection
     {
         return $this->collection->map(
             fn($taskModel) => [
+                'id' => $taskModel->id,
                 'model' => $taskModel->model->fullname,
                 'latency' => $taskModel->latency,
                 'errorRate' => $taskModel->error_rate,
