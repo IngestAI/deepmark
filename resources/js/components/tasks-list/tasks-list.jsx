@@ -43,7 +43,7 @@ export const TasksList = ({ tasks }) => {
                               </tr>
                           </thead>
                           <tbody>
-                          {task.statistics.map((statistic, statisticIndex) => (
+                          {task.statistics.map((statistic) => (
                               <tr key={statistic.id}>
                                   <td>{statistic.model}</td>
                                   <td>{statistic.latency} ms</td>

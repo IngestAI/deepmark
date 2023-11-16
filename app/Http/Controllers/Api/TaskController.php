@@ -93,10 +93,11 @@ class TaskController extends Controller
 
     public function downloadTask(Task $task)
     {
-        $content = implode(';', ['AI Model', 'Avg. Latency', 'Error Rate', 'Assessment']);
+        $content = implode(';', ['AI Model', 'Answer', 'Avg. Latency', 'Error Rate', 'Assessment']);
         foreach ($task->promptRequests as $promptRequest) {
             $content .= "\n" . implode(';', [
                 $promptRequest->model->fullname,
+                $promptRequest->answer,
                 $promptRequest->latency,
                 $promptRequest->error_rate,
                 $promptRequest->assessment
@@ -117,11 +118,12 @@ class TaskController extends Controller
         $model = AIModel::slug($model)->firstOrFail();
 
         $promptRequests = PromptRequest::where('task_id', $task->id)->where('model_id', $model->id)->get();
-        $content = implode(';', ['AI Model', 'Avg. Latency', 'Error Rate', 'Assessment']);
+        $content = implode(';', ['AI Model', 'Answer', 'Avg. Latency', 'Error Rate', 'Assessment']);
 
         foreach ($promptRequests as $promptRequest) {
             $content .= "\n" . implode(';', [
                     $promptRequest->model->fullname,
+                    $promptRequest->answer,
                     $promptRequest->latency,
                     $promptRequest->error_rate,
                     $promptRequest->assessment
