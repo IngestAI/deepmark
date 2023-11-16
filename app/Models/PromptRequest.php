@@ -74,4 +74,11 @@ class PromptRequest extends Model
             get: fn () => !empty($this->match) ? 100 : 0,
         );
     }
+
+    public function answer(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => !empty($this->data['answer']) ? $this->data['answer'] : '',
+        );
+    }
 }
