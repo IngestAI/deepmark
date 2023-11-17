@@ -81,6 +81,52 @@ The platform has gained a significant industry recognition:
 
 In less than one year, IngestAI has amassed an impressive user base of over 40,000 individuals, with nearly 15,000 active users on a monthly basis and few NASDAQ-traded companies among customers and in the pipeline. This level of traction speaks to the platform's ability to attract and engage users and generate business value.
 
+# Key features of Deepmark AI include
+
+## Reliability Assessment
+
+Reliability is a critical factor in determining the effectiveness of Generative AI models. DeepMark.AI.AI offers comprehensive reliability assessments by evaluating model performance under various conditions and capturing potential failure points. This enables developers to identify areas for improvement and enhance the overall reliability of their AI applications.
+
+## Accuracy Evaluation
+
+Ensuring the accuracy of Generative AI models is essential for generating high-quality outputs. DeepMark.AI.AI provides developers with tools to rigorously evaluate the accuracy of their models through extensive testing and validation procedures. By leveraging advanced statistical techniques and comparison methodologies, developers can derive meaningful insights into the accuracy of their Generative AI applications.
+
+## Cost Analysis
+
+Understanding the cost implications before deploying Generative AI models is vital for optimizing resource allocation and maximizing return on investment. DeepMark.AI incorporates cost analysis, enabling developers to make precise estimations of the financial requirements associated with running their AI applications on different GenAI models. By providing cost projections, DeepMark.AI helps developers make informed decisions to achieve cost-effective solutions.
+
+## Relevance Assessment
+
+Ensuring the relevance of generated outputs is critical, especially in applications where Generative AI is employed to address specific use cases. DeepMark.AI.AI facilitates relevance assessment by providing developers with tools to compare generated outputs against desired criteria. This allows developers to fine-tune their models and ensure the generated content aligns with the intended goals and requirements.
+
+## Latency Assessment
+
+The assessment of latency in APIs for Generative AI models is of critical importance to deliver high-quality, efficient AI-powered applications. Latency denotes the time taken to get a response after a request is made and is a potential indicator of performance. By evaluating latency, AI developers can identify inefficiencies and ensure that AI applications perform at an optimal speed. This contributes to overall user satisfaction and impacts the reliability and credibility of AI applications.
+
+## Failure Rate Assessment
+
+Assessing and monitoring failure rates on hundreds or thousands of requests is an essential aspect of assessment of robustness of Generative AI applications. DeepMark.AI offers failure rates assessment capabilities, allowing developers to seamlessly track failure rates at various scales, from hundreds to thousands of requests per second. By providing insights into potential failure patterns, DeepMark.AI enables developers to proactively address issues and maintain optimal performance.
+
+# Key Benefits of Deepmark AI
+
+Incorporating the DeepMark.AI technology developed by IngestAI Labs within a AI development can yield to numerous advantages, including:
+
+## Predictability and Cost-effectiveness
+
+DeepMark.AI prioritizes predictability and cost-effectiveness by providing developers with reliable assessment metrics, cost estimations, and optimization recommendations. This empowers developers to make informed decisions, reducing the risks associated with designing and deploying Generative AI applications.
+
+## Data-driven Decision-making
+
+By leveraging data and rigor, DeepMark.AI enables organizations to move away from relying solely on intuition when assessing Generative AI models. This data-driven approach instills confidence in the decision-making process, allowing for greater precision and accuracy in AI applications development.
+
+## Enhances Application Quality
+
+The ability of DeepMark.AI to comprehensively assess reliability, accuracy, relevance, and cost-efficiency contributes to enhancing the overall quality of AI applications. Through continuous monitoring or periodic assessment, developers can iteratively improve their models’ performance (e.g. by improving metapromts or fine-tuning), ensuring optimal performance and user satisfaction.
+
+# Path Forward
+
+IngestAI is building its own safety and bias detection models based on a proprietary comparative dataset consisting of 7,5+ millions of varied requests and responses of different large language models, which are being labeled and used for training, testing, and refining of identification of bias-related contexts, real-time detection and resolution of biases and unsafe prompts or responses. Deepmark AI is a tool built on top of proprietary ML models for AI application developers which provides reliable assessments of predictability, accuracy, cost-efficiency, and other benchmark metrics. By prioritizing safety, truthfulness, predictability, and cost-effectiveness, while leveraging data and rigor, Deepmark AI empowers developers to build high-quality reliable Generative AI-powered applications. With its comprehensive features and benefits, Deepmark AI opens up new possibilities for organizations seeking to harness the true potential of Generative AI.
+
 # IngestAI DeepMark Setup
 
 1) Install Laravel
