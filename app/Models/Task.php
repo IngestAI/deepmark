@@ -70,7 +70,7 @@ class Task extends Model
         return Attribute::make(
             get: fn () => route('downloadTask', [
                 'task' => $this->uuid,
-            ]),
+            ], false),
         );
     }
 }

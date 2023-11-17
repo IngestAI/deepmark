@@ -69,7 +69,7 @@ class TaskModel extends Model
             get: fn () => route('downloadModel', [
                 'model' => $this->model->slug,
                 'task' => $this->task->uuid,
-            ]),
+            ], false),
         );
     }
 }
