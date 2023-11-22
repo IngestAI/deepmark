@@ -41,7 +41,6 @@ export const ManageTaskForm = ({ id }) => {
                       values,
                       touched,
                       errors,
-                      isSubmitting,
                       resetForm,
                     }) => (
                       <Form noValidate onSubmit={handleSubmit}>
@@ -133,14 +132,13 @@ export const ManageTaskForm = ({ id }) => {
                           </div>
                           <div className="row">
                               <div className="d-flex flex-row">
-                                  <Button variant="secondary" type="submit" disabled={isSubmitting}>
+                                  <Button variant="secondary" type="submit">
                                       <span className="material-symbols-rounded align-middle me-2">electric_bolt</span> Run
                                   </Button>
                                   <div className="ms-2">
                                       <Button
                                         variant="light"
                                         onClick={resetForm}
-                                        disabled={isSubmitting}
                                       >
                                           <span className="align-middle"></span> Clear
                                       </Button>
