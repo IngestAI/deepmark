@@ -8,7 +8,7 @@
     </div>
 </h1>
 
-<p align="center">Deepmark AI empowers Generative AI builders to make informed decisions when chosing among Large Language Models (LLM), enabling seamless assessment of various LLM on your own data, so your AI applications have predictable and reliable performance.</p>
+<p align="center">Deepmark AI empowers Generative AI builders to make informed decisions when choosing among Large Language Models (LLM), enabling seamless assessment of various LLM on your own data, so your AI applications have predictable and reliable performance.</p>
 
 # Introduction
 
@@ -20,13 +20,13 @@ AI sparked a revolution in the last decade and now AI Subject Matter Experts at 
 
 According to <a href="https://hbr.org/2023/06/managing-the-risks-of-generative-ai" target="_blank">recent HBR report</a>: Generative AI cannot operate on a set-it-and-forget-it basis — the tools need constant oversight.
 
-Although assessment metrics are clearly defined and intrinsic metrics are normally assessed almost instantly when an LLM model is released, there’s no available tools (open-source or proprietary) that enable developers to seamlessly make task-specific (intrinsic) assessments. The only solution close to it is the LangChain LangSmith but it is a low-code library, which is still in closed beta and is not mature enough to provide comprehensive metrics that are essential for adoption.
+Although assessment metrics are clearly defined and intrinsic metrics are normally assessed almost instantly when an LLM model is released, there’s no available tools (open-source or proprietary) that enable developers to seamlessly make task-specific (intrinsic) assessments on their unique data. The only solution close to it is the LangChain LangSmith, which is still in closed beta and is not mature enough to provide comprehensive extrinsic metrics that are essential for adoption.
 
-In summary, organizations need to be able to assess AI models on their own data to deliver verifiable results that balance accuracy, precision, recall (the model’s ability to correctly identify positive cases within a given dataset), and reliability, as models can produce different answers to the same prompts, impeding the user’s ability to assess the accuracy of outputs.
+In summary, organizations need to be able to assess LLM models on their own data to deliver verifiable results that balance accuracy, precision, recall (the model’s ability to correctly identify positive cases within a given dataset), and reliability, as models can produce different answers to the same prompts, impeding the user’s ability to assess the accuracy of outputs.
 
 # Our Solution
 
-To address this challenge of reliability, IngestAI Labs has developed the Deepmark AI - a benchmarking tool, that enables assessment of several large language models (LLM) on various extrinsic (task-specific) metrics on your own data. It has pre-built integration with leading Generative AI APIs such as GPT-4, Anthropic, GPT-3.5 Turbo, Cohere, AI21, and others. 
+To address this challenge of reliability, we (IngestAI Labs) have developed Deepmark AI - a benchmarking tool that enables assessment of large language models (LLM) on various extrinsic (task-specific) metrics on your own data. It has pre-built integration with leading Generative AI APIs such as GPT-4, Anthropic, GPT-3.5 Turbo, Cohere, AI21, and others. 
 
 Current GenAI (LLM) Assessment Metrics
 
@@ -44,13 +44,12 @@ Extrinsic metrics, or also called Task-Specific metrics, may include:
 
 These assessment metrics are not exhaustive, and specific applications may have additional or alternative metrics depending on the context and requirements, but some of the task-specific metrics like latency, accuracy, or cost can be considered as the most commonly used.
 
-Deepmark AI facilitates a unique testing environment for language models (LLM), allowing AI developers to easily diagnose inaccuracies and performance issues in a matter of seconds. By using Deepmark AI,  AI applications developers can run multiple LLM models on hundreds or thousands of iterations over specific tasks (question-answering, sentiment analysis, NER, etc) and get exact assessment results in seconds.
+Deepmark AI enables a unique testing environment for language models (LLM), allowing GenAI developers to easily diagnose inaccuracies and performance issues in a matter of seconds. By using Deepmark AI,  Generative AI applications developers can run multiple LLM models on hundreds or thousands of iterations over specific tasks (question-answering, sentiment analysis, NER, etc) and get exact assessment results in seconds.
 
 <img src="https://ingestai.io/storage/files/6/Screenshot%202023-10-17%20at%2000.29.37.png">
 
-DeepMark AI is a tool specifically designed for AI builders.This solution focuses on real-time and iterative assessing extrinsic and some of intrinsic metrics to identify predictable, reliable, and cost-effective Generative AI models based on the unique needs of a particular use case. DeepMark.AI offers cutting-edge capabilities and comprehensive assessments of various important performance metrics such as:
+DeepMark AI is a tool specifically designed for Generative AI builders.This solution focuses on iterative assessment of extrinsic (task-specific) metrics to identify most predictable, reliable, and cost-effective Generative AI models based on the unique needs of a particular use case. Deepmark AI offers capabilities for comprehensive assessment of various important GenAI performance metrics, such as:
 
-Extrinsic (Task-Specific) metrics you can assess using Deepmark AI:
 - Question answering accuracy
 - Text classification accuracy
 - PII recognition accuracy
@@ -62,17 +61,17 @@ Extrinsic (Task-Specific) metrics you can assess using Deepmark AI:
 - Accuracy
 - Latency
 
-Deepmark AI empowers organizations to make informed decisions when navigating through the most important performance metrics of Large Language Models.
+Deepmark AI empowers developers and organizations to make informed decisions when navigating through the most important performance metrics of Large Language Models.
 
 **User Adoption:**
 
-Since its launch in February 2023, IngestAI plantorm has quickly gained popularity as a community-driven platform for rapid exploration, experimentation, and rapid prototyping of various AI use cases.
+Since its launch in February 2023, IngestAI Labs plantorm (Playground, AI Aggregator, App Builder) has quickly gained popularity as a community-driven platform for rapid exploration, experimentation, and rapid prototyping of various AI use cases.
 
 The platform has gained a significant industry recognition:
-- Accepted to the StartX AI Series program,
-- ProductHunt Product of the Day,
-- Selected to the PLUGandPLAY Silicon Valley acceleration program, and
-- Is backed by the esteemed Cohere Acceleration Program.
+- StartX AI Series,
+- ProductHunt Product #1 of the Day,
+- Accelerated by the PLUGandPLAY Silicon Valley program, and
+- Backed by the Cohere Acceleration Program.
 
 In less than one year, IngestAI has amassed an impressive user base of over 40,000 individuals, with nearly 15,000 active users on a monthly basis and few NASDAQ-traded companies among customers and in the pipeline. This level of traction speaks to the platform's ability to attract and engage users and generate business value.
 
@@ -120,7 +119,7 @@ The ability of DeepMark.AI to comprehensively assess reliability, accuracy, rele
 
 # Path Forward
 
-IngestAI is building its own bias detection model based on a proprietary comparative dataset consisting of 7,5+ millions of varied requests and responses of different large language models, which are being labeled and used for training, testing, and refining of identification of bias-related contexts, real-time detection and resolution of biases and unsafe prompts or responses. Deepmark AI is a tool built on top of proprietary ML models for AI application developers which provides reliable assessments of predictability, accuracy, cost-efficiency, and other benchmark metrics. By prioritizing safety, truthfulness, predictability, and cost-effectiveness, while leveraging data and rigor, Deepmark AI empowers developers to build high-quality reliable Generative AI-powered applications. With its comprehensive features and benefits, Deepmark AI opens up new possibilities for organizations seeking to harness the true potential of Generative AI.
+IngestAI is working on building own bias detection model based on a proprietary comparative dataset consisting of 7,5+ millions of varied requests and responses of different large language models, which are being labeled and used for training, testing, and refining of identification of bias-related contexts, real-time detection and resolution of biases and unsafe prompts or responses. Deepmark AI is a tool built on top of proprietary ML models for AI application developers which provides reliable assessments of predictability, accuracy, cost-efficiency, and other benchmark metrics. By prioritizing safety, truthfulness, predictability, and cost-effectiveness, while leveraging data and rigor, Deepmark AI empowers developers to build high-quality reliable Generative AI-powered applications. With its comprehensive features and benefits, Deepmark AI opens up new possibilities for organizations seeking to harness the true potential of Generative AI.
 
 # IngestAI DeepMark Setup
 
