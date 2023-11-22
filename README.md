@@ -8,7 +8,7 @@
     </div>
 </h1>
 
-<p align="center">Deepmark AI empowers Generative AI builders to make informed decisions when chosing among Large Language Models (LLM), enabling seamless assessment of various LLM on your own data so your GenAI-powered solution has predictable and reliable performance.</p>
+<p align="center">Deepmark AI empowers Generative AI builders to make informed decisions when chosing among Large Language Models (LLM), enabling seamless assessment of various LLM on your own data, so your AI applications have predictable and reliable performance.</p>
 
 # Introduction
 
