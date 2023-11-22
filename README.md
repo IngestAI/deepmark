@@ -40,7 +40,7 @@ Examples of intrinsic metrics include, but they are not limited to
 Extrinsic metrics, or also called Task-Specific metrics, may include:
 - Accuracy,
 - Latency,
-- Cost.
+- Cost, etc.
 
 These assessment metrics are not exhaustive, and specific applications may have additional or alternative metrics depending on the context and requirements, but some of the task-specific metrics like latency, accuracy, or cost can be considered as the most commonly used.
 
