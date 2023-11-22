@@ -25,26 +25,6 @@ export const Header = () => {
                   </button>
               </li>
           </ul>
-          {/*todo need implement this component later*/}
-          {/*<ul className="navbar-nav ms-auto d-flex align-items-center h-100">*/}
-          {/*    <li className="nav-item dropdown">*/}
-          {/*        <a href="#" className="nav-link dropdown-toggle d-flex align-items-center" id="bs-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static">*/}
-          {/*        <span className="theme-icon-active d-flex align-items-center">*/}
-          {/*            <span className="material-symbols-rounded align-middle"></span>*/}
-          {/*        </span>*/}
-          {/*        </a>*/}
-          {/*        <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="bs-theme">*/}
-          {/*            <li className="mb-1"><button type="button" className="dropdown-item d-flex align-items-center active" data-bs-theme-value="light"><span className="theme-icon d-flex align-items-center"><span className="material-symbols-rounded align-middle me-2">lightbulb</span></span> Light</button></li>*/}
-          {/*            <li className="mb-1"><button type="button" className="dropdown-item d-flex align-items-center" data-bs-theme-value="dark"><span className="theme-icon d-flex align-items-center"><span className="material-symbols-rounded align-middle me-2">dark_mode</span></span> Dark</button></li>*/}
-          {/*            <li><button type="button" className="dropdown-item d-flex align-items-center" data-bs-theme-value="auto"><span className="theme-icon d-flex align-items-center"><span className="material-symbols-rounded align-middle me-2">invert_colors</span></span> Auto</button></li>*/}
-          {/*        </ul>*/}
-          {/*    </li>*/}
-          {/*    <li className="nav-item dropdown ms-3 d-flex d-lg-none align-items-center justify-content-center flex-column h-100">*/}
-          {/*        <button className="nav-link sidebar-trigger-lg-down size-40 p-0 d-flex align-items-center justify-content-center">*/}
-          {/*            <span className="material-symbols-rounded align-middle">menu</span>*/}
-          {/*        </button>*/}
-          {/*    </li>*/}
-          {/*</ul>*/}
       </header>
     )
 }

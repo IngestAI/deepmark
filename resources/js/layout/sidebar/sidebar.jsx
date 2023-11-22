@@ -12,7 +12,7 @@ export const Sidebar = () => {
                   <img src="/images/logo_round.png" className="img-fluid" height="40" width="40" alt="" />
                 </span>
                 <span className="sidebar-text">
-                  <span className="sidebar-text text-truncate fs-3 fw-bold">IngestAI</span>
+                  <span className="sidebar-text text-truncate fs-3 fw-bold">Deepmark</span>
                 </span>
               </div>
             </Link>
