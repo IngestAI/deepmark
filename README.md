@@ -123,6 +123,8 @@ IngestAI is working on building own bias detection model based on a proprietary 
 
 # IngestAI DeepMark Setup
 
+Docker Image: <a href="https://hub.docker.com/repository/docker/embedditor/deepmark" target="_blank">https://hub.docker.com/repository/docker/embedditor/deepmark</a>
+
 1) Install Laravel
 
 2) php artisan storage:link
