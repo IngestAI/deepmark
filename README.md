@@ -1,7 +1,7 @@
 <h1 align="center" style="border-bottom: none">
     <div>
         <a href="https://deepmark.ai">
-            <img src="https://embedditor.ingestai.co/images/logo.jpg" width="80" />
+            <img src="https://deepmark.ai/deepmark.jpg" width="80" />
             <br>
             DeepMark
         </a>
