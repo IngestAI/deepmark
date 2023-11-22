@@ -26,7 +26,7 @@ In summary, organizations need to be able to assess AI models on their own data 
 
 # Our Solution
 
-To address this challenge of reliability, IngestAI Labs has developed the Deepmark AI - a benchmarking tool, that enables assessment of several of large language models on various extrinsic (task-specific) metrics on your own data. It has pre-built integration with leading Generative AI APIs such as GPT-4, Anthropic, GPT-3.5 Turbo, Cohere, AI21, and others. 
+To address this challenge of reliability, IngestAI Labs has developed the Deepmark AI - a benchmarking tool, that enables assessment of several large language models (LLM) on various extrinsic (task-specific) metrics on your own data. It has pre-built integration with leading Generative AI APIs such as GPT-4, Anthropic, GPT-3.5 Turbo, Cohere, AI21, and others. 
 
 Current GenAI (LLM) Assessment Metrics
 
@@ -50,7 +50,7 @@ Deepmark AI facilitates a unique testing environment for language models (LLM), 
 
 DeepMark AI is a tool specifically designed for AI builders.This solution focuses on real-time and iterative assessing extrinsic and some of intrinsic metrics to identify predictable, reliable, and cost-effective Generative AI models based on the unique needs of a particular use case. DeepMark.AI offers cutting-edge capabilities and comprehensive assessments of various important performance metrics such as:
 
-Extrinsic metrics (Task-Specific) you can assess using Deepmark AI:
+Extrinsic (Task-Specific) metrics you can assess using Deepmark AI:
 - Question answering accuracy
 - Text classification accuracy
 - PII recognition accuracy
