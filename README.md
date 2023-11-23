@@ -121,9 +121,13 @@ The ability of DeepMark.AI to comprehensively assess reliability, accuracy, rele
 
 IngestAI is working on building own bias detection model based on a proprietary comparative dataset consisting of 7,5+ millions of varied requests and responses of different large language models, which are being labeled and used for training, testing, and refining of identification of bias-related contexts, real-time detection and resolution of biases and unsafe prompts or responses. Deepmark AI is a tool built on top of proprietary ML models for AI application developers which provides reliable assessments of predictability, accuracy, cost-efficiency, and other benchmark metrics. By prioritizing safety, truthfulness, predictability, and cost-effectiveness, while leveraging data and rigor, Deepmark AI empowers developers to build high-quality reliable Generative AI-powered applications. With its comprehensive features and benefits, Deepmark AI opens up new possibilities for organizations seeking to harness the true potential of Generative AI.
 
-# IngestAI DeepMark Setup
+# IngestAI DeepMark Setup via Docker Image
 
-Docker Image: <a href="https://hub.docker.com/repository/docker/embedditor/deepmark" target="_blank">https://hub.docker.com/repository/docker/embedditor/deepmark</a>
+Docker Image: <a href="https://hub.docker.com/r/embedditor/deepmark" target="_blank">https://hub.docker.com/r/embedditor/deepmark</a>
+
+You can find detailed instructions on the Docker web page.
+
+# IngestAI DeepMark Setup via GitHub
 
 1) Install Laravel
 
